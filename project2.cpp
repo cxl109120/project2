@@ -30,11 +30,25 @@ sem_t sem_patient;
 sem_t mutex1, mutex2;
 int count = 0;
 
+// define functions
+void enter_clinic(int* num)
+{
+    cout << "Patient " << *num << " enters waiting room, waits for receptionist"
+    << endl;
+}
 
 
+
+
+
+
+
+
+// define threads
 void* patient_thread(void* num)
 {
     //wait
+    void enter_clinic((int*) num);
     sem_wait(&sem_receptionist);
     cout << *(int*)num << " entering..." << endl;
     
