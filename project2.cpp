@@ -18,7 +18,7 @@
 using namespace std;
 
 #define num_receptionist 1
-#define num_patient 3
+#define num_patient 5
 
 
 
@@ -38,7 +38,7 @@ void enter_clinic(int num)
     sem_wait(&mutex1);
     cout << "Patient " << num
     << " enters waiting room, waits for receptionist" << endl;
-    sleep(1);
+    sleep(0.5);
     sem_post(&mutex1);
 }
 
@@ -47,7 +47,7 @@ void sit_waitingroom(int num)
     sem_wait(&mutex1);
     cout << "Patient " << num
     << " leaves receptionist and sits in waiting room" << endl;
-    sleep(1);
+    sleep(0.5);
     sem_post(&mutex1);
 }
 
@@ -57,7 +57,7 @@ void patient_register()
     int patient_num = reception_line.front();
     reception_line.pop();
     cout << "Receptionist register patient " << patient_num << endl;
-    sleep(1);
+    sleep(0.5);
     sem_post(&mutex1);
 }
 
