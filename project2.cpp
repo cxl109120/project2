@@ -81,6 +81,10 @@ int main(int argc, char* argv[])
     // initialize patient
     sem_init(&sem_patient, 0, 3);
     pthread_t patient[3];
+    // initialize mutex
+    sem_init(&mutex1, 0, 1);
+    sem_init(&mutex2, 0, 1);
+    
     
     int *patient_num;
     
