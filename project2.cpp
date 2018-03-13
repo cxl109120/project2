@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
     }
     //pthread_join(t1, NULL);
     //pthread_join(t2, NULL);
-    sem_destroy(&semaphore);
+    sem_destroy(&sem_receptionist);
     return 0;
 }
 
