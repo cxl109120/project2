@@ -47,8 +47,10 @@ void enter_clinic(int* num)
 // define threads
 void* patient_thread(void* num)
 {
-    //wait
+    sem_wait(mutex1);
     enter_clinic((int*) num);
+    sem_post(mutex1);
+    
     sem_wait(&sem_receptionist);
     cout << *(int*)num << " entering..." << endl;
     
