@@ -22,7 +22,7 @@ using namespace std;
 
 
 int count = 0;
-
+int patient[3] = {0, 1, 2};
 
 
 sem_t semaphore;
@@ -51,8 +51,8 @@ int main(int argc, char* argv[])
     
     
     
-    pthread_create(&t1, NULL, thread, &0);
-    pthread_create(&t2, NULL, thread, &1);
+    pthread_create(&t1, NULL, thread, &patient[0]);
+    pthread_create(&t2, NULL, thread, &patient[1]);
     
     
     
