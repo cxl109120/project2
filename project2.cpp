@@ -19,11 +19,14 @@ using namespace std;
 
 #define num_receptionist 1
 #define num_patient 5
+#define num_doctor 3
+#define num_nurse 3
 
 
 
 sem_t sem_receptionist;
 sem_t sem_doctor;
+sem_t sem_nurse;
 sem_t sem_patient;
 sem_t sem_register;
 sem_t sem_sit;
@@ -97,7 +100,6 @@ void* receptionist_thread(void* num)
     {
         sem_wait(&sem_register);
         patient_register();
-        //cout << "Receptionist register patient " << endl;
         sem_post(&sem_sit);
     }
 }
@@ -110,12 +112,17 @@ int main(int argc, char* argv[])
     // initialize thread
     pthread_t receptionist;
     pthread_t patient[num_patient];
+    pthread_t doctor[num_doctor];
+    pthread_t nurse[num_doctor];
     
     // initialize semaphores
     sem_init(&sem_receptionist, 0, num_receptionist);
     sem_init(&sem_patient, 0, num_patient);
+    sem_init(&sem_doctor, 0, num_doctor);
+    sem_init(&sem_nurse, 0, num_nurse);
     
     sem_init(&sem_register, 0, 0);
+    sem_init(&sem_sit, 0, 0);
     /*
     sem_init(&sem_register[0], 0, 0);
     sem_init(&sem_register[1], 0, 0);
@@ -137,6 +144,17 @@ int main(int argc, char* argv[])
     }
     
     pthread_create(&receptionist, NULL, receptionist_thread, NULL);
+    
+    /*
+    for (int i = 0; i < num_doutor; i++)
+    {
+        pthread_create(&doctor[i], NULL, doctor_thread, NULL);
+        pthread_create(&nurse[i], NULL, nurse_thread, NULL);
+    }
+    */
+    
+    
+    
     
     
     
