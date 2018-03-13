@@ -51,8 +51,8 @@ int main(int argc, char* argv[])
     
     
     cout << patient[0] << endl << &patient[0] << endl;
-    pthread_create(&t1, NULL, thread, &patient[0]);
-    pthread_create(&t2, NULL, thread, &patient[1]);
+    pthread_create(&t1, NULL, thread, patient[0]);
+    pthread_create(&t2, NULL, thread, patient[1]);
     
     
     
