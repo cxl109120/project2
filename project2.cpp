@@ -27,14 +27,17 @@ using namespace std;
 sem_t sem_receptionist;
 sem_t sem_doctor;
 sem_t sem_patient;
+sem_t sem_register;
+sem_t sem_sit;
 sem_t mutex1, mutex2;
 int count = 0;
 
 // define functions
 void enter_clinic(int* num)
 {
-    cout << "Patient " << *num << " enters waiting room, waits for receptionist"
-    << endl;
+    cout << "Patient " << *num
+    << " enters waiting room, waits for receptionist" << endl;
+    sleep(1);
 }
 
 
@@ -52,35 +55,42 @@ void* patient_thread(void* num)
     sem_post(&mutex1);
     
     sem_wait(&sem_receptionist);
-    cout << *(int*)num << " entering..." << endl;
-    
+    sem_post($sem_register);
+    //cout << *(int*)num << " entering..." << endl;
+
     //critical section
-    //sleep(1);
+
+    sem_wait(sem_sit);
+    cout << "Patient " << *(int*)num
+    << " leaves receptionist and sits in waiting room" << endl;
     
-    //signal
-    cout << *(int*)num << " exiting..." << endl;
     sem_post(&sem_receptionist);
+    
 }
+
 
 void* receptionist_thread(void* num)
 {
     while (true)
     {
-        sem_wait(&sem_patient);
-        cout << "register patient..." << endl;
-        
+        sem_wait(&sem_register);
+        cout << "Receptionist register patient..." << endl;
+        sem_post(&sem_sit);
     }
 }
 
 
 int main(int argc, char* argv[])
 {
-    // initialize receptionist
-    sem_init(&sem_receptionist, 0, 1);
+    // initialize thread
     pthread_t receptionist;
-    // initialize patient
-    sem_init(&sem_patient, 0, 3);
     pthread_t patient[3];
+    
+    // initialize semaphores
+    sem_init(&sem_receptionist, 0, 1);
+    sem_init(&sem_patient, 0, 3);
+    sem_init(&sem_register, 0, 0);
+    
     // initialize mutex
     sem_init(&mutex1, 0, 1);
     sem_init(&mutex2, 0, 1);
@@ -96,8 +106,6 @@ int main(int argc, char* argv[])
         *patient_num = i;
         pthread_create(&patient[i], NULL, patient_thread, patient_num);
     }
-    //pthread_create(&t1, NULL, thread, &patient[0]);
-    //pthread_create(&t2, NULL, thread, &patient[1]);
     
     //pthread_create(&receptionist, NULL, receptionist_thread, NULL);
     
@@ -107,9 +115,9 @@ int main(int argc, char* argv[])
     {
         pthread_join(patient[i], NULL);
     }
-    //pthread_join(t1, NULL);
-    //pthread_join(t2, NULL);
+
     sem_destroy(&sem_receptionist);
+
     return 0;
 }
 
