@@ -55,12 +55,12 @@ void* patient_thread(void* num)
     sem_post(&mutex1);
     
     sem_wait(&sem_receptionist);
-    sem_post($sem_register);
+    sem_post(&sem_register);
     //cout << *(int*)num << " entering..." << endl;
 
     //critical section
 
-    sem_wait(sem_sit);
+    sem_wait(&sem_sit);
     cout << "Patient " << *(int*)num
     << " leaves receptionist and sits in waiting room" << endl;
     
