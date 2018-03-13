@@ -58,7 +58,7 @@ int main (int argc, char *argv[])
       if (status != 0)
       {
          printf("Create thread\n");
-	 exit(1);
+          exit(1);
       }
    }
 
@@ -84,12 +84,13 @@ int main (int argc, char *argv[])
    /*
     * Wait for all threads to complete.
     */
-   for (thread_count = 0; thread_count < NUM_THREADS; thread_count++) {
+   for (thread_count = 0; thread_count < NUM_THREADS; thread_count++)
+    {
       status = pthread_join (sem_waiters[thread_count], NULL);
       if (status != 0)
       {
          printf("Join thread\n");
-	 exit(1);
+          exit(1);
       }
    }
    return 0;
