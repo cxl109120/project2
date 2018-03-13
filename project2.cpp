@@ -32,7 +32,7 @@ void* thread(void* arg)
     printf("\nEntered..\n");
     
     //critical section
-    sleep(2);
+    sleep(1);
     
     //signal
     printf("\nJust Exiting...\n");
@@ -46,8 +46,6 @@ int main()
     pthread_t t1,t2;
     
     pthread_create(&t1,NULL,thread,NULL);
-    sleep(1);
-    
     pthread_create(&t2,NULL,thread,NULL);
     
     pthread_join(t1,NULL);
