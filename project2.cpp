@@ -27,7 +27,7 @@ int count = 0;
 
 sem_t semaphore;
 
-void* thread(void* num)
+void* patient(void* num)
 {
     //wait
     sem_wait(&semaphore);
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
     {
         patient_num = (int*)malloc(sizeof(int));
         *patient_num = i;
-        pthread_create(&patient[i], NULL, thread, patient_num);
+        pthread_create(&patient[i], NULL, patient, patient_num);
     }
     //pthread_create(&t1, NULL, thread, &patient[0]);
     //pthread_create(&t2, NULL, thread, &patient[1]);
