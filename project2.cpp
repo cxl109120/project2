@@ -32,14 +32,14 @@ void* thread(void* num)
     //wait
     sem_wait(&semaphore);
     //cout << (int*)num << " entering..." << endl;
-    printf("%d Entered...\n", (int*)num);
+    printf("%d Entered...\n", *(int*)num);
     
     //critical section
     sleep(1);
     
     //signal
     //cout << (int*)num << " exiting..." << endl;
-    printf("%d Just Exiting...\n", (int*)num);
+    printf("%d Just Exiting...\n", *(int*)num);
     sem_post(&semaphore);
 }
 
