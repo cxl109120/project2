@@ -60,7 +60,7 @@ void* patient_thread(void* num)
     sem_post(&mutex1);
     
     sem_wait(&sem_receptionist);
-    sem_post(&sem_register[*(int*) num]);
+    sem_post(&sem_register);
 
     sem_wait(&sem_sit);
     sit_waitingroom((int*) num);
@@ -74,8 +74,8 @@ void* receptionist_thread(void* num)
 {
     while (true)
     {
-        sem_wait(&sem_register[*(int*) num]);
-        cout << "Receptionist register patient " << *(int*) num << endl;
+        sem_wait(&sem_register);
+        cout << "Receptionist register patient " << endl;
         sem_post(&sem_sit);
     }
 }
@@ -91,9 +91,12 @@ int main(int argc, char* argv[])
     sem_init(&sem_receptionist, 0, num_receptionist);
     sem_init(&sem_patient, 0, num_patient);
     
+    sem_init(&sem_register, 0, 0);
+    /*
     sem_init(&sem_register[0], 0, 0);
     sem_init(&sem_register[1], 0, 0);
     sem_init(&sem_register[2], 0, 0);
+    */
     
     // initialize mutex
     sem_init(&mutex1, 0, 1);
