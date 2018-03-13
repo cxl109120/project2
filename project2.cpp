@@ -37,10 +37,15 @@ void enter_clinic(int* num)
 {
     cout << "Patient " << *num
     << " enters waiting room, waits for receptionist" << endl;
-    sleep(1);
+    sleep(0.5);
 }
 
-
+void sit_waitingroom(int* num)
+{
+    cout << "Patient " << *num
+    << " leaves receptionist and sits in waiting room" << endl;
+    sleep(0.5);
+}
 
 
 
@@ -56,13 +61,9 @@ void* patient_thread(void* num)
     
     sem_wait(&sem_receptionist);
     sem_post(&sem_register);
-    //cout << *(int*)num << " entering..." << endl;
-
-    //critical section
 
     sem_wait(&sem_sit);
-    cout << "Patient " << *(int*)num
-    << " leaves receptionist and sits in waiting room" << endl;
+    sit_waitingroom((int*) num);
     
     sem_post(&sem_receptionist);
     
@@ -84,11 +85,11 @@ int main(int argc, char* argv[])
 {
     // initialize thread
     pthread_t receptionist;
-    pthread_t patient[3];
+    pthread_t patient[num_patient];
     
     // initialize semaphores
     sem_init(&sem_receptionist, 0, 1);
-    sem_init(&sem_patient, 0, 3);
+    sem_init(&sem_patient, 0, num_patient);
     sem_init(&sem_register, 0, 0);
     
     // initialize mutex
@@ -100,7 +101,7 @@ int main(int argc, char* argv[])
     
 
     
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < num_patient; i++)
     {
         patient_num = (int*)malloc(sizeof(int));
         *patient_num = i;
@@ -111,12 +112,12 @@ int main(int argc, char* argv[])
     
     
     
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < num_patient; i++)
     {
         pthread_join(patient[i], NULL);
     }
 
-    sem_destroy(&sem_receptionist);
+    //sem_destroy(&sem_receptionist);
 
     return 0;
 }
