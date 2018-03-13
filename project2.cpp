@@ -6,6 +6,8 @@
 //
 
 //#include <sys/types.h>
+
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -29,14 +31,14 @@ void* thread(void* num)
 {
     //wait
     sem_wait(&semaphore);
-    cout << num << " entering..." << endl;
+    cout << (int*)num << " entering..." << endl;
     //printf("\nEntered..\n");
     
     //critical section
     sleep(1);
     
     //signal
-    cout << num << " exiting..." < endl;
+    cout << (int*)num << " exiting..." < endl;
     //printf("\nJust Exiting...\n");
     sem_post(&semaphore);
 }
