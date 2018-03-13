@@ -48,7 +48,7 @@ void enter_clinic(int* num)
 void* patient_thread(void* num)
 {
     //wait
-    void enter_clinic((int*) num);
+    enter_clinic((int*) num);
     sem_wait(&sem_receptionist);
     cout << *(int*)num << " entering..." << endl;
     
