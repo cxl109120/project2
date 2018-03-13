@@ -48,7 +48,7 @@ void sit_waitingroom(int num)
 
 void patient_register()
 {
-    int patient_num = patient_line.front();
+    int patient_num = register_line.front();
     patient_line.pop();
     cout << "Receptionist register patient " << patient_num << endl;
     sleep(1);
@@ -66,6 +66,7 @@ void* patient_thread(void* num)
     
     sem_wait(&mutex1);
     enter_clinic(patient_num);
+    // enqueue
     register_line.push(patient_num);
     sem_post(&mutex1);
     
