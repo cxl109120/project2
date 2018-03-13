@@ -18,9 +18,9 @@
 using namespace std;
 
 #define num_receptionist 1
-#define num_patient 5
-#define num_doctor 3
-#define num_nurse 3
+#define num_patient 3
+#define num_doctor 1
+#define num_nurse 1
 
 
 
