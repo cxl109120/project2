@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <queue>
 
 using namespace std;
 
@@ -27,7 +28,8 @@ sem_t sem_patient;
 sem_t sem_register;
 sem_t sem_sit;
 sem_t mutex1, mutex2;
-int count = 0;
+queue <int> register_line;
+int count;
 
 // define functions
 void enter_clinic(int num)
@@ -44,9 +46,11 @@ void sit_waitingroom(int num)
     sleep(1);
 }
 
-void patient_register(int num)
+void patient_register()
 {
-    cout << "Receptionist register patient " << num << endl;
+    int patient_num = patient_line.front();
+    patient_line.pop();
+    cout << "Receptionist register patient " << patient_num << endl;
     sleep(1);
 }
 
@@ -62,6 +66,7 @@ void* patient_thread(void* num)
     
     sem_wait(&mutex1);
     enter_clinic(patient_num);
+    register_line.push(patient_num);
     sem_post(&mutex1);
     
     sem_wait(&sem_receptionist);
@@ -80,7 +85,8 @@ void* receptionist_thread(void* num)
     while (true)
     {
         sem_wait(&sem_register);
-        cout << "Receptionist register patient " << endl;
+        patient_register();
+        //cout << "Receptionist register patient " << endl;
         sem_post(&sem_sit);
     }
 }
@@ -88,6 +94,8 @@ void* receptionist_thread(void* num)
 
 int main(int argc, char* argv[])
 {
+    count = 0;
+    
     // initialize thread
     pthread_t receptionist;
     pthread_t patient[num_patient];
