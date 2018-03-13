@@ -58,9 +58,12 @@ int main(int argc, char* argv[])
     //pthread_create(&t2, NULL, thread, &patient[1]);
     
     
-    
-    pthread_join(t1, NULL);
-    pthread_join(t2, NULL);
+    for (int i = 0; i < 3; i++)
+    {
+        pthread_join(patient[i], NULL);
+    }
+    //pthread_join(t1, NULL);
+    //pthread_join(t2, NULL);
     sem_destroy(&semaphore);
     return 0;
 }
