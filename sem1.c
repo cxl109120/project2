@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
-#define NUM_THREADS 4
+#define NUM_THREADS 8
 
 sem_t semaphore;
 
