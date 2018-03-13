@@ -62,7 +62,7 @@ void* patient_thread(void* num)
     sem_post(&mutex1);
     
     sem_wait(&sem_receptionist);
-    sem_post(&sem_register);
+    sem_post(&sem_register[patientnr]);
 
     sem_wait(&sem_sit);
     sit_waitingroom(patientnr);
