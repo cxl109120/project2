@@ -21,9 +21,6 @@ using namespace std;
 
 
 
-//int patient[3] = {0, 1, 2};
-
-
 sem_t sem_receptionist;
 sem_t sem_doctor;
 sem_t sem_patient;
@@ -61,17 +58,17 @@ void patient_register(int num)
 // define threads
 void* patient_thread(void* num)
 {
-    int patientnr = *(int*) num;
+    int patient_num = *(int*) num;
     
     sem_wait(&mutex1);
-    enter_clinic(patientnr);
+    enter_clinic(patient_num);
     sem_post(&mutex1);
     
     sem_wait(&sem_receptionist);
     sem_post(&sem_register);
 
     sem_wait(&sem_sit);
-    sit_waitingroom(patientnr);
+    sit_waitingroom(patient_num);
     
     sem_post(&sem_receptionist);
     
@@ -111,9 +108,7 @@ int main(int argc, char* argv[])
     
     
     int *patient_num;
-    
 
-    
     for (int i = 0; i < num_patient; i++)
     {
         patient_num = (int*)malloc(sizeof(int));
