@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
     pthread_t t1,t2;
     
     
-    
+    cout << patient[0] << endl << &patient[0] << endl;
     pthread_create(&t1, NULL, thread, &patient[0]);
     pthread_create(&t2, NULL, thread, &patient[1]);
     
