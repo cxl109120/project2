@@ -55,7 +55,7 @@ void sit_waitingroom(int num)
 // define threads
 void* patient_thread(void* num)
 {
-    int patientnr = *(int*) num
+    int patientnr = *(int*) num;
     
     sem_wait(&mutex1);
     enter_clinic(patientnr);
