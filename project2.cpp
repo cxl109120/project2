@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
     
     for (int i = 0; i < 3; i++)
     {
-        pthread_create(&patient[i], NULL, thread, &i)
+        pthread_create(&patient[i], NULL, thread, &i);
     }
     //pthread_create(&t1, NULL, thread, &patient[0]);
     //pthread_create(&t2, NULL, thread, &patient[1]);
