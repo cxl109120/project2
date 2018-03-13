@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
         pthread_create(&patient[i], NULL, patient_thread, patient_num);
     }
     
-    //pthread_create(&receptionist, NULL, receptionist_thread, NULL);
+    pthread_create(&receptionist, NULL, receptionist_thread, NULL);
     
     
     
