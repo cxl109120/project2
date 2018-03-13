@@ -38,7 +38,7 @@ void enter_clinic(int num)
     cout << "Patient " << num
     << " enters waiting room, waits for receptionist" << endl;
     sleep(1);
-    sem_post($mutex1);
+    sem_post(&mutex1);
 }
 
 void sit_waitingroom(int num)
