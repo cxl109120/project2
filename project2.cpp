@@ -47,13 +47,15 @@ void* thread(void* num)
 int main(int argc, char* argv[])
 {
     sem_init(&semaphore, 0, 1);
-    pthread_t t1,t2;
+    pthread_t patient[num_patient];
     
     
-
-    pthread_create(&t1, NULL, thread, &patient[0]);
-    sleep(1);
-    pthread_create(&t2, NULL, thread, &patient[1]);
+    for (int i = 0; i < num_patient; i++)
+    {
+        pthread_create(&patient[i], NULL, thread, &i)
+    }
+    //pthread_create(&t1, NULL, thread, &patient[0]);
+    //pthread_create(&t2, NULL, thread, &patient[1]);
     
     
     
