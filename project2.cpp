@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     sem_init(&sem_receptionist, 0, 1);
     pthread_t receptionist;
     // initialize patient
-    sem_inti(&sem_patient, 0, 3);
+    sem_init(&sem_patient, 0, 3);
     pthread_t patient[3];
     
     int *patient_num;
