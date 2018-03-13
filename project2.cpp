@@ -18,7 +18,7 @@
 using namespace std;
 
 #define num_receptionist 1
-#define num_patient 10
+#define num_patient 5
 
 
 
@@ -34,24 +34,30 @@ int count;
 // define functions
 void enter_clinic(int num)
 {
+    sem_wait(&mutex1);
     cout << "Patient " << num
     << " enters waiting room, waits for receptionist" << endl;
     sleep(1);
+    sem_post($mutex1);
 }
 
 void sit_waitingroom(int num)
 {
+    sem_wait(&mutex1);
     cout << "Patient " << num
     << " leaves receptionist and sits in waiting room" << endl;
     sleep(1);
+    sem_post(&mutex1);
 }
 
 void patient_register()
 {
+    sem_wait(&mutex1);
     int patient_num = register_line.front();
     register_line.pop();
     cout << "Receptionist register patient " << patient_num << endl;
     sleep(1);
+    sem_post(&mutex1);
 }
 
 
