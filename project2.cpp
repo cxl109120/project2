@@ -25,17 +25,19 @@ int count = 0;
 
 sem_t semaphore;
 
-void* thread(void* arg)
+void* thread(void* num)
 {
     //wait
     sem_wait(&semaphore);
-    printf("\nEntered..\n");
+    cout << num << " entering..." << endl;
+    //printf("\nEntered..\n");
     
     //critical section
     sleep(1);
     
     //signal
-    printf("\nJust Exiting...\n");
+    cout << num << " exiting..." < endl;
+    //printf("\nJust Exiting...\n");
     sem_post(&semaphore);
 }
 
@@ -45,11 +47,16 @@ int main()
     sem_init(&semaphore, 0, 1);
     pthread_t t1,t2;
     
-    pthread_create(&t1,NULL,thread,NULL);
-    pthread_create(&t2,NULL,thread,NULL);
     
-    pthread_join(t1,NULL);
-    pthread_join(t2,NULL);
+    
+    pthread_create(&t1, NULL, thread, 0);
+    pthread_create(&t2, NULL, thread, 1);
+    
+    
+    
+    
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
     sem_destroy(&semaphore);
     return 0;
 }
