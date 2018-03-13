@@ -37,14 +37,14 @@ void enter_clinic(int* num)
 {
     cout << "Patient " << *num
     << " enters waiting room, waits for receptionist" << endl;
-    sleep(0.5);
+    sleep(1);
 }
 
 void sit_waitingroom(int* num)
 {
     cout << "Patient " << *num
     << " leaves receptionist and sits in waiting room" << endl;
-    sleep(0.5);
+    sleep(1);
 }
 
 
