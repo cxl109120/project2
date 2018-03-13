@@ -47,7 +47,7 @@ void sit_waitingroom(int num)
     sleep(1);
 }
 
-void register(int num)
+void patient_register(int num)
 {
     cout << "Receptionist register patient " << num << endl;
     sleep(1);
@@ -83,7 +83,7 @@ void* receptionist_thread(void* num)
     while (true)
     {
         sem_wait(&sem_register);
-        cout << "Receptionist register patient " << patientnr << endl;
+        cout << "Receptionist register patient " << endl;
         sem_post(&sem_sit);
     }
 }
