@@ -49,7 +49,7 @@ void sit_waitingroom(int num)
 void patient_register()
 {
     int patient_num = register_line.front();
-    patient_line.pop();
+    register_line.pop();
     cout << "Receptionist register patient " << patient_num << endl;
     sleep(1);
 }
