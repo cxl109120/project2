@@ -38,7 +38,7 @@ void* thread(void* num)
     sleep(1);
     
     //signal
-    cout << (int*)num << " exiting..." < endl;
+    cout << (int*)num << " exiting..." << endl;
     //printf("\nJust Exiting...\n");
     sem_post(&semaphore);
 }
