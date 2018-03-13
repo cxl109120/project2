@@ -16,7 +16,7 @@
 
 using namespace std;
 
-#define num_receptionist = 1;
+#define num_receptionist 1
 #define num_patient 3
 
 
@@ -27,7 +27,7 @@ using namespace std;
 sem_t sem_receptionist;
 sem_t sem_doctor;
 sem_t sem_patient;
-sem_t sem_register;
+sem_t sem_register[3];
 sem_t sem_sit;
 sem_t mutex1, mutex2;
 int count = 0;
@@ -60,7 +60,7 @@ void* patient_thread(void* num)
     sem_post(&mutex1);
     
     sem_wait(&sem_receptionist);
-    sem_post(&sem_register);
+    sem_post(&sem_register[*(int*) num]);
 
     sem_wait(&sem_sit);
     sit_waitingroom((int*) num);
@@ -74,8 +74,8 @@ void* receptionist_thread(void* num)
 {
     while (true)
     {
-        sem_wait(&sem_register);
-        cout << "Receptionist register patient..." << endl;
+        sem_wait(&sem_register[*(int*) num]);
+        cout << "Receptionist register patient " << *(int*) num << endl;
         sem_post(&sem_sit);
     }
 }
@@ -88,9 +88,12 @@ int main(int argc, char* argv[])
     pthread_t patient[num_patient];
     
     // initialize semaphores
-    sem_init(&sem_receptionist, 0, 1);
+    sem_init(&sem_receptionist, 0, num_receptionist);
     sem_init(&sem_patient, 0, num_patient);
-    sem_init(&sem_register, 0, 0);
+    
+    sem_init(&sem_register[0], 0, 0);
+    sem_init(&sem_register[1], 0, 0);
+    sem_init(&sem_register[2], 0, 0);
     
     // initialize mutex
     sem_init(&mutex1, 0, 1);
