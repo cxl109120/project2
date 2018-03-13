@@ -31,15 +31,15 @@ void* thread(void* num)
 {
     //wait
     sem_wait(&semaphore);
-    //cout << (int*)num << " entering..." << endl;
-    printf("%d Entered...\n", *(int*)num);
+    cout << *(int*)num << " entering..." << endl;
+    //printf("%d Entered...\n", *(int*)num);
     
     //critical section
     sleep(1);
     
     //signal
-    //cout << (int*)num << " exiting..." << endl;
-    printf("%d Just Exiting...\n", *(int*)num);
+    cout << *(int*)num << " exiting..." << endl;
+    //printf("%d Just Exiting...\n", *(int*)num);
     sem_post(&semaphore);
 }
 
@@ -50,13 +50,10 @@ int main(int argc, char* argv[])
     pthread_t t1,t2;
     
     
-    cout << patient[0] << endl << &patient[0] << endl;
-    cout << patient[1] << endl << &patient[1] << endl;
 
     pthread_create(&t1, NULL, thread, &patient[0]);
     sleep(1);
     pthread_create(&t2, NULL, thread, &patient[1]);
-    
     
     
     
