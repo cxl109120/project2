@@ -27,7 +27,7 @@ using namespace std;
 sem_t sem_receptionist;
 sem_t sem_doctor;
 sem_t sem_patient;
-sem_t sem_register;
+sem_t sem_register[3];
 sem_t sem_sit;
 sem_t mutex1, mutex2;
 int count = 0;
@@ -76,8 +76,10 @@ void* receptionist_thread(void* num)
 {
     while (true)
     {
-        sem_wait(&sem_register);
-        cout << "Receptionist register patient " << endl;
+        int patientnr = *(int*) num;
+        
+        sem_wait(&sem_register[patientnr]);
+        cout << "Receptionist register patient " << patientnr << endl;
         sem_post(&sem_sit);
     }
 }
@@ -93,12 +95,11 @@ int main(int argc, char* argv[])
     sem_init(&sem_receptionist, 0, num_receptionist);
     sem_init(&sem_patient, 0, num_patient);
     
-    sem_init(&sem_register, 0, 0);
-    /*
+    //sem_init(&sem_register, 0, 0);
+    
     sem_init(&sem_register[0], 0, 0);
     sem_init(&sem_register[1], 0, 0);
     sem_init(&sem_register[2], 0, 0);
-    */
     
     // initialize mutex
     sem_init(&mutex1, 0, 1);
