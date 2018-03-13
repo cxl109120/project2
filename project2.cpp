@@ -18,7 +18,7 @@
 using namespace std;
 
 #define num_receptionist 1
-#define num_patient 5
+#define num_patient 3
 
 
 
@@ -68,13 +68,15 @@ void patient_register()
 // define threads
 void* patient_thread(void* num)
 {
-    int patient_num = *(int*) num;
+    //int patient_num = *(int*) num;
+    sem_wait(&mutex1);
+    patient_num = count;
+    count++;
+    sem_post(&mutex1);
     
-    //sem_wait(&mutex1);
     enter_clinic(patient_num);
     // enqueue
     register_line.push(patient_num);
-    //sem_post(&mutex1);
     
     sem_wait(&sem_receptionist);
     sem_post(&sem_register);
@@ -122,13 +124,14 @@ int main(int argc, char* argv[])
     sem_init(&mutex2, 0, 1);
     
     
-    int *patient_num;
+    //int *patient_num;
 
     for (int i = 0; i < num_patient; i++)
     {
-        patient_num = (int*)malloc(sizeof(int));
-        *patient_num = i;
-        pthread_create(&patient[i], NULL, patient_thread, patient_num);
+        //patient_num = (int*)malloc(sizeof(int));
+        //*patient_num = i;
+        //pthread_create(&patient[i], NULL, patient_thread, patient_num);
+        pthread_create(&patient[i], NULL, patient_thread, NULL);
     }
     
     pthread_create(&receptionist, NULL, receptionist_thread, NULL);
