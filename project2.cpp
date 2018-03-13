@@ -44,15 +44,15 @@ void* thread(void* num)
 }
 
 
-int main()
+int main(int argc, char* argv[])
 {
     sem_init(&semaphore, 0, 1);
     pthread_t t1,t2;
     
     
     
-    pthread_create(&t1, NULL, thread, 0);
-    pthread_create(&t2, NULL, thread, 1);
+    pthread_create(&t1, NULL, thread, &0);
+    pthread_create(&t2, NULL, thread, &1);
     
     
     
