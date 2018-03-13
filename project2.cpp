@@ -27,7 +27,7 @@ using namespace std;
 sem_t sem_receptionist;
 sem_t sem_doctor;
 sem_t sem_patient;
-sem_t sem_register[3];
+sem_t sem_register;
 sem_t sem_sit;
 sem_t mutex1, mutex2;
 int count = 0;
