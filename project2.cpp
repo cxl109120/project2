@@ -70,11 +70,11 @@ void* patient_thread(void* num)
 {
     int patient_num = *(int*) num;
     
-    sem_wait(&mutex1);
+    //sem_wait(&mutex1);
     enter_clinic(patient_num);
     // enqueue
     register_line.push(patient_num);
-    sem_post(&mutex1);
+    //sem_post(&mutex1);
     
     sem_wait(&sem_receptionist);
     sem_post(&sem_register);
