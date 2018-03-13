@@ -28,7 +28,8 @@ sem_t sem_patient;
 sem_t sem_register;
 sem_t sem_sit;
 sem_t mutex1, mutex2;
-queue <int> register_line;
+
+queue <int> reception_line;
 int count;
 
 // define functions
@@ -53,8 +54,8 @@ void sit_waitingroom(int num)
 void patient_register()
 {
     sem_wait(&mutex1);
-    int patient_num = register_line.front();
-    register_line.pop();
+    int patient_num = reception_line.front();
+    reception_line.pop();
     cout << "Receptionist register patient " << patient_num << endl;
     sleep(1);
     sem_post(&mutex1);
@@ -68,6 +69,7 @@ void patient_register()
 // define threads
 void* patient_thread(void* num)
 {
+    int patient_num;
     //int patient_num = *(int*) num;
     sem_wait(&mutex1);
     patient_num = count;
@@ -76,7 +78,7 @@ void* patient_thread(void* num)
     
     enter_clinic(patient_num);
     // enqueue
-    register_line.push(patient_num);
+    reception_line.push(patient_num);
     
     sem_wait(&sem_receptionist);
     sem_post(&sem_register);
