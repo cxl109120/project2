@@ -22,6 +22,8 @@ using namespace std;
 #define num_doctor 3
 //#define num_nurse 1
 
+int count;
+queue <int> reception_line;
 
 // declare semaphores
 sem_t sem_receptionist;
@@ -140,8 +142,7 @@ void* doctor_thread(void* num)
 
 int main(int argc, char* argv[])
 {
-    int count = 0;
-    queue <int> reception_line;
+    count = 0;
 
     // initialize thread
     pthread_t receptionist;
