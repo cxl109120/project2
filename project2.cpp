@@ -129,7 +129,7 @@ int main(int argc, char* argv[])
     sem_init(&sem_receptionist, 0, num_receptionist);
     sem_init(&sem_patient, 0, num_patient);
     sem_init(&sem_doctor, 0, num_doctor);
-    sem_init(&sem_nurse, 0, num_nurse);
+    sem_init(&sem_nurse, 0, num_doctor);
     
     sem_init(&sem_register, 0, 0);
     sem_init(&sem_sit, 0, 0);
