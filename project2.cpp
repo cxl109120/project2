@@ -124,7 +124,6 @@ void* patient_thread(void* arg)
     patient_enter_clinic(patient_num);
     // enqueue reception_line
     reception_line.push(patient_num);
-    
     sem_wait(&sem_receptionist);
     sem_post(&sem_register);
     sem_wait(&sem_sit);
@@ -133,6 +132,7 @@ void* patient_thread(void* arg)
     
     // enqueue doctor_line
     doctor_line.push(patient_num);
+    sem_post(&sem_take_office);
     sem_wait(&sem_enter_office);
     patient_enter_office(patient_num);
     sem_post(&sem_patient_ready);
@@ -146,7 +146,7 @@ void* receptionist_thread(void* arg)
         sem_wait(&sem_register);
         receptionist_register(); // dequeue reception_line
         sem_post(&sem_sit);
-        sem_post(&sem_take_office);
+        //sem_post(&sem_take_office);
     }
 }
 
