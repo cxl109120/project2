@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
         pthread_create(&doctor[i], NULL, doctor_thread, NULL);
         pthread_create(&nurse[i], NULL, nurse_thread, NULL);
     }
-    */
+    
     
     
     
