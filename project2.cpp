@@ -150,12 +150,12 @@ void* patient_thread(void* arg)
     sem_wait(&sem_receptionist);
     sem_post(&sem_register);
     sem_wait(&sem_sit);
-    sem_post(&sem_receptionist);
+    //sem_post(&sem_receptionist);
     patient_sit(patient_num);
     
     // enqueue doctor_line
     doctor_line.push(patient_num);
-    sem_wait(&nurse);
+    sem_wait(&sem_nurse);
     sem_post(&sem_take_office);
     sem_wait(&sem_enter_office);
     patient_enter_office(patient_num);
@@ -174,6 +174,7 @@ void* receptionist_thread(void* arg)
         sem_wait(&sem_register);
         receptionist_register(); // dequeue reception_line
         sem_post(&sem_sit);
+        sem_post(&sem_receptionist);
         //sem_post(&sem_take_office);
     }
 }
@@ -184,10 +185,10 @@ void* nurse_thread(void* num)
     while (true)
     {
         sem_wait(&sem_take_office);
-        sem_wait(&doctor);
+        sem_wait(&sem_doctor);
         nurse_take_office(nurse_num); // dequeue doctor_line
         sem_post(&sem_enter_office);
-        sem_post(&nurse);
+        sem_post(&sem_nurse);
         //sem_post(&sem_patient_ready);
     }
 }
@@ -201,7 +202,7 @@ void* doctor_thread(void* num)
         doctor_listen(doctor_num);
         sem_post(&sem_listen_symptom);
         sem_wait(&sem_receive_advice);
-        sem_post(&doctor);
+        sem_post(&sem_doctor);
         //sem_post(
     }
 }
