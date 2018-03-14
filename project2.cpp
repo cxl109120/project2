@@ -26,7 +26,7 @@ using namespace std;
 int count;
 queue <int> reception_line;
 queue <int> doctor_line;
-array <int> patient_doctor[num_doctor] = {0};
+int patient_doctor[num_doctor] = {0};
 
 // declare semaphores
 sem_t sem_receptionist;
