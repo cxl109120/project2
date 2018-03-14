@@ -31,7 +31,7 @@ int doctor_patient[num_doctor] = {-1};
 
 // declare semaphores
 sem_t sem_receptionist;
-sem_t sem_patient;
+//sem_t sem_patient;
 sem_t sem_doctor;
 sem_t sem_nurse;
 
@@ -223,7 +223,7 @@ int main(int argc, char* argv[])
     
     // initialize semaphores
     sem_init(&sem_receptionist, 0, num_receptionist);
-    sem_init(&sem_patient, 0, num_patient);
+    //sem_init(&sem_patient, 0, num_patient);
     sem_init(&sem_doctor, 0, num_doctor);
     sem_init(&sem_nurse, 0, num_doctor);
     sem_init(&sem_register, 0, 0);
