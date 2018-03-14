@@ -104,14 +104,14 @@ void* receptionist_thread(void* arg)
     }
 }
 
-void* nurse_thread(void* arg)
+void* nurse_thread(void* num)
 {
-    
+    int nurse_num = *(int*) num;
 }
 
-void* doctor_thread(void* arg)
+void* doctor_thread(void* num)
 {
-    
+    int doctor_num = *(int*) num;
 }
 
 
@@ -158,10 +158,12 @@ int main(int argc, char* argv[])
     pthread_create(&receptionist, NULL, receptionist_thread, NULL);
     
     // doctor and nurse thread
+    int doctor_num;
     for (int i = 0; i < num_doctor; i++)
     {
-        pthread_create(&doctor[i], NULL, doctor_thread, NULL);
-        pthread_create(&nurse[i], NULL, nurse_thread, NULL);
+        doctor_num = i;
+        pthread_create(&doctor[i], NULL, doctor_thread, &doctor_num);
+        pthread_create(&nurse[i], NULL, nurse_thread, &doctor_num);
     }
     
     
