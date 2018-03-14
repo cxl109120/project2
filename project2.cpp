@@ -183,11 +183,11 @@ int main(int argc, char* argv[])
     int doctor_num;
     for (int i = 0; i < num_doctor; i++)
     {
-        sem_wait(mutex1);
+        sem_wait(&mutex1);
         doctor_num = i;
         pthread_create(&doctor[i], NULL, doctor_thread, &doctor_num);
         pthread_create(&nurse[i], NULL, nurse_thread, &doctor_num);
-        sem_post(mutex1);
+        sem_post(&mutex1);
     }
     
     
