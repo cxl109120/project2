@@ -25,7 +25,7 @@ using namespace std;
 
 int count;
 queue <int> reception_line;
-queue <int> doctor_ine;
+queue <int> doctor_line;
 
 // declare semaphores
 sem_t sem_receptionist;
