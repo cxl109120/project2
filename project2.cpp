@@ -43,7 +43,6 @@ sem_t sem_patient_ready;
 sem_t sem_listen_symptom;
 sem_t sem_receive_advice;
 
-sem_t sem_doctor_ready[num_doctor];
 sem_t mutex1, mutex2;
 
 
@@ -156,6 +155,7 @@ void* patient_thread(void* arg)
     
     // enqueue doctor_line
     doctor_line.push(patient_num);
+    sem_wait(&nurse);
     sem_post(&sem_take_office);
     sem_wait(&sem_enter_office);
     patient_enter_office(patient_num);
@@ -184,8 +184,10 @@ void* nurse_thread(void* num)
     while (true)
     {
         sem_wait(&sem_take_office);
+        sem_wait(&doctor);
         nurse_take_office(nurse_num); // dequeue doctor_line
         sem_post(&sem_enter_office);
+        sem_post(&nurse);
         //sem_post(&sem_patient_ready);
     }
 }
@@ -199,6 +201,7 @@ void* doctor_thread(void* num)
         doctor_listen(doctor_num);
         sem_post(&sem_listen_symptom);
         sem_wait(&sem_receive_advice);
+        sem_post(&doctor);
         //sem_post(
     }
 }
