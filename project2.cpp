@@ -20,7 +20,8 @@ using namespace std;
 #define num_receptionist 1
 #define num_patient 3
 #define num_doctor 3
-//#define num_nurse 1
+
+
 
 int count;
 queue <int> reception_line;
@@ -180,14 +181,15 @@ int main(int argc, char* argv[])
     pthread_create(&receptionist, NULL, receptionist_thread, NULL);
     
     // doctor and nurse thread
-    int doctor_num;
+    int *doctor_num;
     for (int i = 0; i < num_doctor; i++)
     {
-        sem_wait(&mutex1);
-        doctor_num = i;
-        pthread_create(&doctor[i], NULL, doctor_thread, &doctor_num);
-        pthread_create(&nurse[i], NULL, nurse_thread, &doctor_num);
-        sem_post(&mutex1);
+        //sem_wait(&mutex1);
+        doctor_num = (int*)malloc(sizeof(int));
+        *doctor_num = i;
+        pthread_create(&doctor[i], NULL, doctor_thread, doctor_num);
+        pthread_create(&nurse[i], NULL, nurse_thread, doctor_num);
+        //sem_post(&mutex1);
     }
     
     
