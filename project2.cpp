@@ -18,7 +18,7 @@
 using namespace std;
 
 #define num_receptionist 1
-#define num_patient 9
+#define num_patient 3
 #define num_doctor 3
 
 
@@ -228,7 +228,7 @@ int main(int argc, char* argv[])
     sem_init(&sem_receive_advice, 0, 0);
     // initialize mutex
     sem_init(&mutex1, 0, 1);
-    sem_init(&mutex2, 0, 1);
+    //sem_init(&mutex2, 0, 1);
     
     
     //int *patient_num;
