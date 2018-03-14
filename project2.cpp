@@ -41,6 +41,7 @@ sem_t sem_take_office;
 sem_t sem_enter_office;
 sem_t sem_patient_ready;
 sem_t sem_listen_symptom;
+sem_t sem_receive_advice;
 sem_t mutex1, mutex2;
 
 
@@ -111,6 +112,15 @@ void doctor_listen(int num)
     sem_post(&mutex1);
 }
 
+void patient_receive(int num)
+{
+    sem_wait(&mutex1);
+    int doctor_num = patient_doctor[num];
+    cout << "Patient " << num
+    << " receives advice from doctor " << doctor_num << endl;
+    sleep(0.5);
+    sem_post(&mutex1);
+}
 
 
 
@@ -140,6 +150,8 @@ void* patient_thread(void* arg)
     patient_enter_office(patient_num);
     sem_post(&sem_patient_ready);
     sem_wait(&sem_listen_symptom);
+    sem_post(&sem_receive_advice);
+    patient_receive(patient_num);
 }
 
 void* receptionist_thread(void* arg)
@@ -173,6 +185,7 @@ void* doctor_thread(void* num)
         sem_wait(&sem_patient_ready);
         sem_post(&sem_listen_symptom);
         doctor_listen(doctor_num);
+        sem_wait(&sem_receive_advice);
     }
 }
 
@@ -201,6 +214,7 @@ int main(int argc, char* argv[])
     sem_init(&sem_enter_office, 0, 0);
     sem_init(&sem_patient_ready, 0, 0);
     sem_init(&sem_listen_symptom, 0, 0);
+    sem_init(&sem_receive_advice, 0, 0);
     // initialize mutex
     sem_init(&mutex1, 0, 1);
     sem_init(&mutex2, 0, 1);
