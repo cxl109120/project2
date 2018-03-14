@@ -42,6 +42,7 @@ sem_t sem_enter_office;
 sem_t sem_patient_ready;
 sem_t sem_listen_symptom;
 sem_t sem_receive_advice;
+
 sem_t sem_doctor_ready[3];
 
 sem_t mutex1, mutex2;
@@ -234,6 +235,11 @@ int main(int argc, char* argv[])
     sem_init(&sem_patient_ready, 0, 0);
     sem_init(&sem_listen_symptom, 0, 0);
     sem_init(&sem_receive_advice, 0, 0);
+    
+    for (int i = 0; i < 3; i++)
+    {
+        sem_init(&(sem_doctor_ready[i]), 0, 0);
+    }
 
     
     // initialize mutex
