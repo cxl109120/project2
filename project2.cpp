@@ -70,7 +70,7 @@ void patient_register()
 
 
 // define threads
-void* patient_thread(void* num)
+void* patient_thread( )
 {
     int patient_num;
     //int patient_num = *(int*) num;
