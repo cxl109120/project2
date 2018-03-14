@@ -19,7 +19,7 @@ using namespace std;
 
 #define num_receptionist 1
 #define num_patient 3
-#define num_doctor 1
+#define num_doctor 3
 //#define num_nurse 1
 
 
@@ -107,11 +107,13 @@ void* receptionist_thread(void* arg)
 void* nurse_thread(void* num)
 {
     int nurse_num = *(int*) num;
+    cout << "This is nurse " << nurse_num << endl;
 }
 
 void* doctor_thread(void* num)
 {
     int doctor_num = *(int*) num;
+    cout << "This is doctor " << doctor_num << endl;
 }
 
 
