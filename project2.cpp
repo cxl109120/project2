@@ -70,7 +70,7 @@ void patient_register()
 
 
 // define threads
-void* patient_thread( )
+void* patient_thread(void* arg)
 {
     int patient_num;
     //int patient_num = *(int*) num;
@@ -94,7 +94,7 @@ void* patient_thread( )
 }
 
 
-void* receptionist_thread(void* num)
+void* receptionist_thread(void* arg)
 {
     while (true)
     {
@@ -104,12 +104,12 @@ void* receptionist_thread(void* num)
     }
 }
 
-void* nurse_thread(void* num)
+void* nurse_thread(void* arg)
 {
     
 }
 
-void* doctor_thread(void* num)
+void* doctor_thread(void* arg)
 {
     
 }
