@@ -122,6 +122,15 @@ void patient_receive(int num)
     sem_post(&mutex1);
 }
 
+void patient_leave(int num);
+{
+    sem_wait(&mutex1);
+    cout << "Patient " << num
+    << " leave" << endl;
+    sleep(0.5);
+    sem_post(&mutex1);
+}
+
 
 
 // define threads
@@ -152,6 +161,8 @@ void* patient_thread(void* arg)
     sem_wait(&sem_listen_symptom);
     patient_receive(patient_num);
     sem_post(&sem_receive_advice);
+    
+    patient_leave(patient_num);
 }
 
 void* receptionist_thread(void* arg)
