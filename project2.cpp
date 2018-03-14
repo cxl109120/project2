@@ -86,7 +86,7 @@ void nurse_take_office(int num)
     << " takes patient " << patient_num << " to doctor's office" << endl;
     
     patient_doctor[patient_num] = num;
-    doctor_patient[num] = [patient_num];
+    doctor_patient[num] = patient_num;
     sleep(0.5);
     sem_post(&mutex1);
 }
