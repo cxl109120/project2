@@ -23,6 +23,16 @@ using namespace std;
 //#define num_nurse 1
 
 
+// declare semaphores
+sem_t sem_receptionist;
+sem_t sem_patient;
+sem_t sem_doctor;
+sem_t sem_nurse;
+sem_t sem_register;
+sem_t sem_sit;
+sem_t sem_office;
+sem_t mutex1, mutex2;
+
 
 
 
@@ -139,16 +149,8 @@ int main(int argc, char* argv[])
     pthread_t doctor[num_doctor];
     pthread_t nurse[num_doctor];
     
-    // initialize semaphores
-    sem_t sem_receptionist;
-    sem_t sem_patient;
-    sem_t sem_doctor;
-    sem_t sem_nurse;
-    sem_t sem_register;
-    sem_t sem_sit;
-    sem_t sem_office;
-    sem_t mutex1, mutex2;
     
+    // initialize semaphores
     
     sem_init(&sem_receptionist, 0, num_receptionist);
     sem_init(&sem_patient, 0, num_patient);
