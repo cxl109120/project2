@@ -20,7 +20,7 @@ using namespace std;
 #define num_receptionist 1
 #define num_patient 3
 #define num_doctor 1
-#define num_nurse 1
+//#define num_nurse 1
 
 
 
@@ -104,7 +104,12 @@ void* receptionist_thread(void* num)
     }
 }
 
-void* nurse_thread(void* arg)
+void* nurse_thread(void* num)
+{
+    
+}
+
+void* doctor_thread(void* num)
 {
     
 }
@@ -140,6 +145,7 @@ int main(int argc, char* argv[])
     
     //int *patient_num;
 
+    // patient thread
     for (int i = 0; i < num_patient; i++)
     {
         //patient_num = (int*)malloc(sizeof(int));
@@ -148,9 +154,10 @@ int main(int argc, char* argv[])
         pthread_create(&patient[i], NULL, patient_thread, NULL);
     }
     
+    // receptionist thread
     pthread_create(&receptionist, NULL, receptionist_thread, NULL);
     
-    
+    // doctor and nurse thread
     for (int i = 0; i < num_doctor; i++)
     {
         pthread_create(&doctor[i], NULL, doctor_thread, NULL);
