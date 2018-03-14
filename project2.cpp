@@ -128,15 +128,14 @@ void* patient_thread(void* arg)
     sem_wait(&sem_receptionist);
     sem_post(&sem_register);
     sem_wait(&sem_sit);
-    patient_sit(patient_num);
-    
     sem_post(&sem_receptionist);
+    patient_sit(patient_num);
     
     // enqueue doctor_line
     doctor_line.push(patient_num);
     sem_wait(&sem_enter_office);
     patient_enter_office(patient_num);
-    
+    sem_post(&sem_patient_ready);
     sem_wait(&sem_listen_symptom);
 }
 
@@ -159,7 +158,7 @@ void* nurse_thread(void* num)
         sem_wait(&sem_take_office);
         nurse_take_office(nurse_num); // dequeue doctor_line
         sem_post(&sem_enter_office);
-        sem_post(&sem_patient_ready);
+        //sem_post(&sem_patient_ready);
     }
 }
 
