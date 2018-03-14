@@ -122,7 +122,7 @@ void patient_receive(int num)
     sem_post(&mutex1);
 }
 
-void patient_leave(int num);
+void patient_leave(int num)
 {
     sem_wait(&mutex1);
     cout << "Patient " << num
