@@ -26,7 +26,8 @@ using namespace std;
 int count;
 queue <int> reception_line;
 queue <int> doctor_line;
-int patient_doctor[num_doctor] = {-1};
+int patient_doctor[num_patient] = {-1};
+int doctor_patient[num_doctor] = {-1};
 
 // declare semaphores
 sem_t sem_receptionist;
@@ -85,6 +86,7 @@ void nurse_take_office(int num)
     << " takes patient " << patient_num << " to doctor's office" << endl;
     
     patient_doctor[patient_num] = num;
+    doctor_patient[num] = [patient_num];
     sleep(0.5);
     sem_post(&mutex1);
 }
@@ -102,8 +104,9 @@ void patient_enter_office(int num)
 void doctor_listen(int num)
 {
     sem_wait(&mutex1);
+    int patient_num = doctor_patient[num];
     cout << "Doctor " << num
-    << " listens to symptoms from patient" << " X" << endl;
+    << " listens to symptoms from patient " << patient_num << endl;
     sleep(0.5);
     sem_post(&mutex1);
 }
@@ -224,12 +227,10 @@ int main(int argc, char* argv[])
     for (int i = 0; i < num_doctor; i++)
     {
         sem_wait(&mutex1);
-        
         doctor_num = (int*)malloc(sizeof(int));
         *doctor_num = i;
         pthread_create(&doctor[i], NULL, doctor_thread, doctor_num);
         pthread_create(&nurse[i], NULL, nurse_thread, doctor_num);
-        
         sem_post(&mutex1);
     }
     
