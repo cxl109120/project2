@@ -42,8 +42,7 @@ sem_t sem_enter_office;
 sem_t sem_patient_ready;
 sem_t sem_listen_symptom;
 sem_t sem_receive_advice;
-
-sem_t sem_doctor_ready[3];
+sem_t sem_doctor_ready[num_doctor];
 
 sem_t mutex1, mutex2;
 
@@ -187,7 +186,7 @@ void* nurse_thread(void* num)
     while (true)
     {
         sem_wait(&sem_take_office);
-        sem_wait(&sem_doctor);
+        sem_wait(&(sem_doctor[nurse_num]);
         nurse_take_office(nurse_num); // dequeue doctor_line
         sem_post(&sem_enter_office);
         sem_post(&sem_nurse);
@@ -204,7 +203,7 @@ void* doctor_thread(void* num)
         doctor_listen(doctor_num);
         sem_post(&sem_listen_symptom);
         sem_wait(&sem_receive_advice);
-        sem_post(&sem_doctor);
+        sem_post(&(sem_doctor[doctor_num]));
         //sem_post(
     }
 }
@@ -236,9 +235,9 @@ int main(int argc, char* argv[])
     sem_init(&sem_listen_symptom, 0, 0);
     sem_init(&sem_receive_advice, 0, 0);
     
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < num_doctor; i++)
     {
-        sem_init(&(sem_doctor_ready[i]), 0, 0);
+        sem_init(&(sem_doctor_ready[i]), 0, 1);
     }
 
     
@@ -275,12 +274,7 @@ int main(int argc, char* argv[])
         sem_post(&mutex1);
     }
     
-    
-    
-    
-    
-    
-    
+
     for (int i = 0; i < num_patient; i++)
     {
         pthread_join(patient[i], NULL);
