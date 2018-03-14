@@ -34,7 +34,8 @@ sem_t sem_doctor;
 sem_t sem_nurse;
 sem_t sem_register;
 sem_t sem_sit;
-sem_t sem_office;
+sem_t sem_take_office;
+sem_t sem_enter_office;
 sem_t mutex1, mutex2;
 
 
@@ -82,7 +83,13 @@ void nurse_take_office(int num)
     sem_post(&mutex1);
 }
 
-
+void patient_enter_office(int num)
+{
+    sem_wait(&mutex1);
+    cout << "Patient " << num
+    << " enters doctor X's office" << endl;
+    sem_post(&mutex1);
+}
 
 
 
@@ -110,6 +117,8 @@ void* patient_thread(void* arg)
     
     // enqueue doctor_line
     doctor_line.push(patient_num);
+    sem_wait(&sem_enter_office);
+    patient_enter_office(patient_num);
     
 }
 
@@ -121,7 +130,7 @@ void* receptionist_thread(void* arg)
         sem_wait(&sem_register);
         receptionist_register(); // dequeue reception_line
         sem_post(&sem_sit);
-        sem_post(&sem_office);
+        sem_post(&sem_take_office);
     }
 }
 
@@ -130,8 +139,9 @@ void* nurse_thread(void* num)
     int nurse_num = *(int*) num;
     while (true)
     {
-        sem_wait(&sem_office);
+        sem_wait(&sem_take_office);
         nurse_take_office(nurse_num); // dequeue doctor_line
+        sem_post(&sem_enter_office);
     }
 }
 
@@ -160,7 +170,6 @@ int main(int argc, char* argv[])
     
     
     // initialize semaphores
-    
     sem_init(&sem_receptionist, 0, num_receptionist);
     sem_init(&sem_patient, 0, num_patient);
     sem_init(&sem_doctor, 0, num_doctor);
@@ -168,6 +177,7 @@ int main(int argc, char* argv[])
     sem_init(&sem_register, 0, 0);
     sem_init(&sem_sit, 0, 0);
     sem_init(&sem_office, 0, 0);
+    sem_init(&sem_enter_office, 0, 0);
     // initialize mutex
     sem_init(&mutex1, 0, 1);
     sem_init(&mutex2, 0, 1);
