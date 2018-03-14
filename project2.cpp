@@ -199,7 +199,7 @@ void* doctor_thread(void* num)
         doctor_listen(doctor_num);
         sem_post(&sem_listen_symptom);
         sem_wait(&sem_receive_advice);
-        sem_post(
+        //sem_post(
     }
 }
 
@@ -229,6 +229,10 @@ int main(int argc, char* argv[])
     sem_init(&sem_patient_ready, 0, 0);
     sem_init(&sem_listen_symptom, 0, 0);
     sem_init(&sem_receive_advice, 0, 0);
+    
+    sem_init(&sem_doctor[num_doctor], 0, 0);
+    
+    
     // initialize mutex
     sem_init(&mutex1, 0, 1);
     //sem_init(&mutex2, 0, 1);
