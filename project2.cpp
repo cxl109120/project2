@@ -72,7 +72,7 @@ void nurse_take_office(int num)
 {
     sem_wait(&mutex1);
     cout << "Nurse " << num
-    << "takes patient x to doctor's office" << endl;
+    << " takes patient x to doctor's office" << endl;
     sem_post(&mutex1);
 }
 
