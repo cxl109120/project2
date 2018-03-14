@@ -104,6 +104,11 @@ void* receptionist_thread(void* num)
     }
 }
 
+void* nurse_thread(void* arg)
+{
+    
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -145,8 +150,8 @@ int main(int argc, char* argv[])
     
     pthread_create(&receptionist, NULL, receptionist_thread, NULL);
     
-    /*
-    for (int i = 0; i < num_doutor; i++)
+    
+    for (int i = 0; i < num_doctor; i++)
     {
         pthread_create(&doctor[i], NULL, doctor_thread, NULL);
         pthread_create(&nurse[i], NULL, nurse_thread, NULL);
