@@ -186,7 +186,7 @@ void* nurse_thread(void* num)
     while (true)
     {
         sem_wait(&sem_take_office);
-        sem_wait(&(sem_doctor[nurse_num]);
+        sem_wait(&(sem_doctor_ready[nurse_num]));
         nurse_take_office(nurse_num); // dequeue doctor_line
         sem_post(&sem_enter_office);
         sem_post(&sem_nurse);
@@ -203,8 +203,7 @@ void* doctor_thread(void* num)
         doctor_listen(doctor_num);
         sem_post(&sem_listen_symptom);
         sem_wait(&sem_receive_advice);
-        sem_post(&(sem_doctor[doctor_num]));
-        //sem_post(
+        sem_post(&(sem_doctor_ready[doctor_num]));
     }
 }
 
@@ -235,7 +234,7 @@ int main(int argc, char* argv[])
     sem_init(&sem_listen_symptom, 0, 0);
     sem_init(&sem_receive_advice, 0, 0);
     
-    for (int i = 0; i < num_doctor; i++)
+    for(int i = 0; i < num_doctor; i++)
     {
         sem_init(&(sem_doctor_ready[i]), 0, 1);
     }
