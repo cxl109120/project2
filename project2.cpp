@@ -150,8 +150,8 @@ void* patient_thread(void* arg)
     patient_enter_office(patient_num);
     sem_post(&sem_patient_ready);
     sem_wait(&sem_listen_symptom);
-    sem_post(&sem_receive_advice);
     patient_receive(patient_num);
+    sem_post(&sem_receive_advice);
 }
 
 void* receptionist_thread(void* arg)
@@ -183,8 +183,8 @@ void* doctor_thread(void* num)
     while (true)
     {
         sem_wait(&sem_patient_ready);
-        sem_post(&sem_listen_symptom);
         doctor_listen(doctor_num);
+        sem_post(&sem_listen_symptom);
         sem_wait(&sem_receive_advice);
     }
 }
