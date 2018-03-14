@@ -104,6 +104,7 @@ void doctor_listen(int num)
     sem_wait(&mutex1);
     cout << "Doctor " << num
     << " listens to symptoms from patient" << " X" << endl;
+    sleep(0.5);
     sem_post(&mutex1);
 }
 
@@ -169,7 +170,7 @@ void* doctor_thread(void* num)
     {
         sem_wait(&sem_patient_ready);
         sem_post(&sem_listen_symptom);
-        doctor_listen(num);
+        doctor_listen(doctor_num);
     }
 }
 
