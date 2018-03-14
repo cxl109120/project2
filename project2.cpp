@@ -99,7 +99,7 @@ void patient_enter_office(int num)
     sem_post(&mutex1);
 }
 
-void doctor_lister(int num)
+void doctor_listen(int num)
 {
     sem_wait(&mutex1);
     cout << "Doctor " << num
@@ -136,7 +136,7 @@ void* patient_thread(void* arg)
     sem_wait(&sem_enter_office);
     patient_enter_office(patient_num);
     
-    sem_wait(&sem_lister_symptom);
+    sem_wait(&sem_listen_symptom);
 }
 
 void* receptionist_thread(void* arg)
