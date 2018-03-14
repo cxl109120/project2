@@ -42,6 +42,7 @@ sem_t sem_enter_office;
 sem_t sem_patient_ready;
 sem_t sem_listen_symptom;
 sem_t sem_receive_advice;
+sem_t sem_doctor_ready[3];
 
 sem_t mutex1, mutex2;
 
