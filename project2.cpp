@@ -80,6 +80,8 @@ void nurse_take_office(int num)
     doctor_line.pop();
     cout << "Nurse " << num
     << " takes patient " << patient_num << " to doctor's office" << endl;
+    
+    patient_doctor[patient_num] = num;
     sleep(0.5);
     sem_post(&mutex1);
 }
@@ -87,8 +89,9 @@ void nurse_take_office(int num)
 void patient_enter_office(int num)
 {
     sem_wait(&mutex1);
+    int doctor_num = patient_doctor[num];
     cout << "Patient " << num
-    << " enters doctor X's office" << endl;
+    << " enters doctor "<< doctor_num << "'s office" << endl;
     sem_post(&mutex1);
 }
 
