@@ -230,7 +230,10 @@ int main(int argc, char* argv[])
     sem_init(&sem_listen_symptom, 0, 0);
     sem_init(&sem_receive_advice, 0, 0);
     
-    sem_init(&sem_doctor[num_doctor], 0, 0);
+    for(int i = 0; i < num_doctor; i++)
+    {
+        sem_init(&sem_doctor[i], 0, 0);
+    }
     
     
     // initialize mutex
