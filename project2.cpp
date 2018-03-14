@@ -24,19 +24,10 @@ using namespace std;
 
 
 
-sem_t sem_receptionist;
-sem_t sem_doctor;
-sem_t sem_nurse;
-sem_t sem_patient;
-sem_t sem_register;
-sem_t sem_sit;
-sem_t mutex1, mutex2;
 
-queue <int> reception_line;
-int count;
 
 // define functions
-void enter_clinic(int num)
+void patient_enter_clinic(int num)
 {
     sem_wait(&mutex1);
     cout << "Patient " << num
@@ -45,7 +36,7 @@ void enter_clinic(int num)
     sem_post(&mutex1);
 }
 
-void sit_waitingroom(int num)
+void patient_sit(int num)
 {
     sem_wait(&mutex1);
     cout << "Patient " << num
@@ -58,9 +49,18 @@ void patient_register()
 {
     sem_wait(&mutex1);
     int patient_num = reception_line.front();
+    // dequeue reception_line
     reception_line.pop();
     cout << "Receptionist register patient " << patient_num << endl;
     sleep(0.5);
+    sem_post(&mutex1);
+}
+
+void nurse_take_office(int num)
+{
+    sem_wait(&mutex1);
+    cout << "Nurse " << num
+    << "takes patient x to doctor's office" << endl;
     sem_post(&mutex1);
 }
 
@@ -79,7 +79,7 @@ void* patient_thread(void* arg)
     count++;
     sem_post(&mutex1);
     
-    enter_clinic(patient_num);
+    patient_enter_clinic(patient_num);
     // enqueue
     reception_line.push(patient_num);
     
@@ -87,7 +87,7 @@ void* patient_thread(void* arg)
     sem_post(&sem_register);
 
     sem_wait(&sem_sit);
-    sit_waitingroom(patient_num);
+    patient_sit(patient_num);
     
     sem_post(&sem_receptionist);
     
@@ -101,26 +101,38 @@ void* receptionist_thread(void* arg)
         sem_wait(&sem_register);
         patient_register();
         sem_post(&sem_sit);
+        sem_post(&sem_office);
     }
 }
 
 void* nurse_thread(void* num)
 {
     int nurse_num = *(int*) num;
-    cout << "This is nurse " << nurse_num << endl;
+    while (true)
+    {
+        sem_wait(&sem_office);
+        nurse_take_office(nurse_num);
+    }
 }
 
 void* doctor_thread(void* num)
 {
     int doctor_num = *(int*) num;
-    cout << "This is doctor " << doctor_num << endl;
+    while (true)
+    {
+        
+    }
 }
+
+
+
 
 
 int main(int argc, char* argv[])
 {
-    count = 0;
-    
+    int count = 0;
+    queue <int> reception_line;
+
     // initialize thread
     pthread_t receptionist;
     pthread_t patient[num_patient];
@@ -128,18 +140,23 @@ int main(int argc, char* argv[])
     pthread_t nurse[num_doctor];
     
     // initialize semaphores
+    sem_t sem_receptionist;
+    sem_t sem_patient;
+    sem_t sem_doctor;
+    sem_t sem_nurse;
+    sem_t sem_register;
+    sem_t sem_sit;
+    sem_t sem_office;
+    sem_t mutex1, mutex2;
+    
+    
     sem_init(&sem_receptionist, 0, num_receptionist);
     sem_init(&sem_patient, 0, num_patient);
     sem_init(&sem_doctor, 0, num_doctor);
     sem_init(&sem_nurse, 0, num_doctor);
-    
     sem_init(&sem_register, 0, 0);
     sem_init(&sem_sit, 0, 0);
-    /*
-    sem_init(&sem_register[0], 0, 0);
-    sem_init(&sem_register[1], 0, 0);
-    sem_init(&sem_register[2], 0, 0);
-    */
+    sem_init(&sem_office, 0, 0);
     // initialize mutex
     sem_init(&mutex1, 0, 1);
     sem_init(&mutex2, 0, 1);
