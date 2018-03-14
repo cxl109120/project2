@@ -33,10 +33,13 @@ sem_t sem_receptionist;
 sem_t sem_patient;
 sem_t sem_doctor;
 sem_t sem_nurse;
+
 sem_t sem_register;
 sem_t sem_sit;
 sem_t sem_take_office;
 sem_t sem_enter_office;
+sem_t sem_patient_ready;
+sem_t sem_listen_symptom;
 sem_t mutex1, mutex2;
 
 
@@ -92,6 +95,15 @@ void patient_enter_office(int num)
     int doctor_num = patient_doctor[num];
     cout << "Patient " << num
     << " enters doctor "<< doctor_num << "'s office" << endl;
+    sleep(0.5);
+    sem_post(&mutex1);
+}
+
+void doctor_lister(int num)
+{
+    sem_wait(&mutex1);
+    cout << "Doctor " << num
+    << " listens to symptoms from patient" << " X" << endl;
     sem_post(&mutex1);
 }
 
@@ -124,8 +136,8 @@ void* patient_thread(void* arg)
     sem_wait(&sem_enter_office);
     patient_enter_office(patient_num);
     
+    sem_wait(&sem_lister_symptom);
 }
-
 
 void* receptionist_thread(void* arg)
 {
@@ -146,6 +158,7 @@ void* nurse_thread(void* num)
         sem_wait(&sem_take_office);
         nurse_take_office(nurse_num); // dequeue doctor_line
         sem_post(&sem_enter_office);
+        sem_post(&sem_patient_ready);
     }
 }
 
@@ -154,7 +167,9 @@ void* doctor_thread(void* num)
     int doctor_num = *(int*) num;
     while (true)
     {
-        
+        sem_wait(&sem_patient_ready);
+        sem_post(&sem_listen_symptom);
+        doctor_listen(num);
     }
 }
 
@@ -172,7 +187,6 @@ int main(int argc, char* argv[])
     pthread_t doctor[num_doctor];
     pthread_t nurse[num_doctor];
     
-    
     // initialize semaphores
     sem_init(&sem_receptionist, 0, num_receptionist);
     sem_init(&sem_patient, 0, num_patient);
@@ -182,6 +196,8 @@ int main(int argc, char* argv[])
     sem_init(&sem_sit, 0, 0);
     sem_init(&sem_take_office, 0, 0);
     sem_init(&sem_enter_office, 0, 0);
+    sem_init(&sem_patient_ready, 0, 0);
+    sem_init(&sem_listen_symptom, 0, 0);
     // initialize mutex
     sem_init(&mutex1, 0, 1);
     sem_init(&mutex2, 0, 1);
