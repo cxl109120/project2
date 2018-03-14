@@ -42,6 +42,8 @@ sem_t sem_enter_office;
 sem_t sem_patient_ready;
 sem_t sem_listen_symptom;
 sem_t sem_receive_advice;
+
+sem_t sem_doctor_ready[num_doctor];
 sem_t mutex1, mutex2;
 
 
@@ -193,14 +195,11 @@ void* doctor_thread(void* num)
     int doctor_num = *(int*) num;
     while (true)
     {
-        sem_wait(&mutex1);
-        
         sem_wait(&sem_patient_ready);
         doctor_listen(doctor_num);
         sem_post(&sem_listen_symptom);
         sem_wait(&sem_receive_advice);
-        
-        sem_post(&mutex1);
+        sem_post(
     }
 }
 
