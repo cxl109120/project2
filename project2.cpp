@@ -176,7 +176,7 @@ int main(int argc, char* argv[])
     sem_init(&sem_nurse, 0, num_doctor);
     sem_init(&sem_register, 0, 0);
     sem_init(&sem_sit, 0, 0);
-    sem_init(&sem_office, 0, 0);
+    sem_init(&sem_take_office, 0, 0);
     sem_init(&sem_enter_office, 0, 0);
     // initialize mutex
     sem_init(&mutex1, 0, 1);
