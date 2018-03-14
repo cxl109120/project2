@@ -58,7 +58,7 @@ void patient_sit(int num)
     sem_post(&mutex1);
 }
 
-void patient_register()
+void receptionist_register()
 {
     sem_wait(&mutex1);
     int patient_num = reception_line.front();
@@ -74,6 +74,7 @@ void nurse_take_office(int num)
     sem_wait(&mutex1);
     cout << "Nurse " << num
     << " takes patient x to doctor's office" << endl;
+    sleep(0.5);
     sem_post(&mutex1);
 }
 
@@ -93,7 +94,7 @@ void* patient_thread(void* arg)
     sem_post(&mutex1);
     
     patient_enter_clinic(patient_num);
-    // enqueue
+    // enqueue reception_line
     reception_line.push(patient_num);
     
     sem_wait(&sem_receptionist);
@@ -112,7 +113,8 @@ void* receptionist_thread(void* arg)
     while (true)
     {
         sem_wait(&sem_register);
-        patient_register();
+        receptionist_register();
+        // dequeue reception_line
         sem_post(&sem_sit);
         sem_post(&sem_office);
     }
@@ -181,14 +183,18 @@ int main(int argc, char* argv[])
     pthread_create(&receptionist, NULL, receptionist_thread, NULL);
     
     // doctor and nurse thread
-    int *doctor_num;
+    //int *doctor_num;
+    int doctor_num;
     for (int i = 0; i < num_doctor; i++)
     {
         //sem_wait(&mutex1);
-        doctor_num = (int*)malloc(sizeof(int));
-        *doctor_num = i;
-        pthread_create(&doctor[i], NULL, doctor_thread, doctor_num);
-        pthread_create(&nurse[i], NULL, nurse_thread, doctor_num);
+        
+        //doctor_num = (int*)malloc(sizeof(int));
+        //*doctor_num = i;
+        doctor_num = i;
+        pthread_create(&doctor[i], NULL, doctor_thread, &doctor_num);
+        pthread_create(&nurse[i], NULL, nurse_thread, &doctor_num);
+        
         //sem_post(&mutex1);
     }
     
