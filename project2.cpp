@@ -196,7 +196,7 @@ void* nurse_thread(void* num)
         sem_wait(&(sem_doctor_ready[nurse_num]));
         nurse_take_office(nurse_num); // dequeue doctor_line
         sem_post(&sem_assignment);
-        sem_post(&sem_enter_office);
+        sem_post(&(sem_enter_office[nurse_num]));
         sem_post(&sem_nurse);
         //sem_post(&sem_patient_ready);
     }
