@@ -38,11 +38,12 @@ sem_t sem_nurse;
 sem_t sem_register;
 sem_t sem_sit;
 sem_t sem_take_office;
-sem_t sem_enter_office;
-sem_t sem_patient_ready;
-sem_t sem_listen_symptom;
-sem_t sem_receive_advice;
+
 sem_t sem_doctor_ready[num_doctor];
+sem_t sem_enter_office[num_doctor];
+sem_t sem_patient_ready[num_doctor];
+sem_t sem_listen_symptom[num_doctor];
+sem_t sem_receive_advice[num_doctor];
 
 sem_t mutex1, mutex2;
 
@@ -158,12 +159,16 @@ void* patient_thread(void* arg)
     doctor_line.push(patient_num);
     sem_wait(&sem_nurse);
     sem_post(&sem_take_office);
-    sem_wait(&sem_enter_office);
+    
+    // different offices
+    int doctor_num = patient_doctor[patient_num];
+    
+    sem_wait(&(sem_enter_office[doctor_num]));
     patient_enter_office(patient_num);
-    sem_post(&sem_patient_ready);
-    sem_wait(&sem_listen_symptom);
+    sem_post(&(sem_patient_ready[doctor_num]));
+    sem_wait(&(sem_listen_symptom[doctor_num]));
     patient_receive(patient_num);
-    sem_post(&sem_receive_advice);
+    sem_post(&(sem_receive_advice[doctor_num]));
     
     patient_leave(patient_num);
 }
@@ -188,7 +193,7 @@ void* nurse_thread(void* num)
         sem_wait(&sem_take_office);
         sem_wait(&(sem_doctor_ready[nurse_num]));
         nurse_take_office(nurse_num); // dequeue doctor_line
-        sem_post(&sem_enter_office);
+        sem_post(&(sem_enter_office[nurse_num]));
         sem_post(&sem_nurse);
         //sem_post(&sem_patient_ready);
     }
@@ -199,10 +204,10 @@ void* doctor_thread(void* num)
     int doctor_num = *(int*) num;
     while (true)
     {
-        sem_wait(&sem_patient_ready);
+        sem_wait(&sem_patient_ready[doctor_num]);
         doctor_listen(doctor_num);
-        sem_post(&sem_listen_symptom);
-        sem_wait(&sem_receive_advice);
+        sem_post(&(sem_listen_symptom[doctor_num]));
+        sem_wait(&(sem_receive_advice[doctor_num]));
         sem_post(&(sem_doctor_ready[doctor_num]));
     }
 }
@@ -229,14 +234,20 @@ int main(int argc, char* argv[])
     sem_init(&sem_register, 0, 0);
     sem_init(&sem_sit, 0, 0);
     sem_init(&sem_take_office, 0, 0);
+    /*
     sem_init(&sem_enter_office, 0, 0);
     sem_init(&sem_patient_ready, 0, 0);
     sem_init(&sem_listen_symptom, 0, 0);
     sem_init(&sem_receive_advice, 0, 0);
+    */
     
     for(int i = 0; i < num_doctor; i++)
     {
         sem_init(&(sem_doctor_ready[i]), 0, 1);
+        sem_init(&(sem_enter_office[i]), 0, 0);
+        sem_init(&(sem_patient_ready[i]), 0, 0);
+        sem_init(&(sem_listen_symptom[i]), 0, 0);
+        sem_init(&(sem_receive_advice[i]), 0, 0);
     }
 
     
