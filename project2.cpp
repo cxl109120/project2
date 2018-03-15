@@ -38,7 +38,8 @@ sem_t sem_nurse;
 sem_t sem_register;
 sem_t sem_sit;
 sem_t sem_take_office;
-sem_t sem_assignment;
+
+sem_t sem_assignment[num_patient];
 
 sem_t sem_doctor_ready[num_doctor];
 sem_t sem_enter_office[num_doctor];
@@ -81,7 +82,7 @@ void receptionist_register()
     sem_post(&mutex1);
 }
 
-void nurse_take_office(int num)
+int nurse_take_office(int num)
 {
     sem_wait(&mutex1);
     int patient_num = doctor_line.front();
@@ -94,6 +95,7 @@ void nurse_take_office(int num)
     doctor_patient[num] = patient_num;
     sleep(0.5);
     sem_post(&mutex1);
+    return patient_num;
 }
 
 void patient_enter_office(int num)
@@ -160,9 +162,9 @@ void* patient_thread(void* arg)
     doctor_line.push(patient_num);
     sem_wait(&sem_nurse);
     sem_post(&sem_take_office);
-    sem_wait(&sem_assignment);
     
     // assign patients with doctors
+    sem_wait(&(sem_assignment[patient_num]));
     int doctor_num = patient_doctor[patient_num];
     
     sem_wait(&(sem_enter_office[doctor_num]));
@@ -194,8 +196,8 @@ void* nurse_thread(void* num)
     {
         sem_wait(&sem_take_office);
         sem_wait(&(sem_doctor_ready[nurse_num]));
-        nurse_take_office(nurse_num); // dequeue doctor_line
-        sem_post(&sem_assignment);
+        int patient_num = nurse_take_office(nurse_num); // dequeue doctor_line
+        sem_post(&(sem_assignment[patient_num]));
         sem_post(&(sem_enter_office[nurse_num]));
         sem_post(&sem_nurse);
         //sem_post(&sem_patient_ready);
@@ -237,13 +239,15 @@ int main(int argc, char* argv[])
     sem_init(&sem_register, 0, 0);
     sem_init(&sem_sit, 0, 0);
     sem_init(&sem_take_office, 0, 0);
-    sem_init(&sem_assignment, 0, 0);
     /*
     sem_init(&sem_patient_ready, 0, 0);
     sem_init(&sem_listen_symptom, 0, 0);
     sem_init(&sem_receive_advice, 0, 0);
     */
-    
+    for(int i = 0; i < num_patient; i++)
+    {
+        sem_init(&(sem_assignment[i]), 0, 0);
+    }
     for(int i = 0; i < num_doctor; i++)
     {
         sem_init(&(sem_doctor_ready[i]), 0, 1);
