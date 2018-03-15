@@ -38,6 +38,7 @@ sem_t sem_nurse;
 sem_t sem_register;
 sem_t sem_sit;
 sem_t sem_take_office;
+sem_t sem_assignment;
 
 sem_t sem_doctor_ready[num_doctor];
 sem_t sem_enter_office[num_doctor];
@@ -194,7 +195,7 @@ void* nurse_thread(void* num)
         sem_wait(&sem_take_office);
         sem_wait(&(sem_doctor_ready[nurse_num]));
         nurse_take_office(nurse_num); // dequeue doctor_line
-        sem_post(&sem_assignment)
+        sem_post(&sem_assignment);
         sem_post(&sem_enter_office);
         sem_post(&sem_nurse);
         //sem_post(&sem_patient_ready);
@@ -236,6 +237,7 @@ int main(int argc, char* argv[])
     sem_init(&sem_register, 0, 0);
     sem_init(&sem_sit, 0, 0);
     sem_init(&sem_take_office, 0, 0);
+    sem_init(&sem_assignment, 0, 0);
     /*
     sem_init(&sem_patient_ready, 0, 0);
     sem_init(&sem_listen_symptom, 0, 0);
