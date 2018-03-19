@@ -338,6 +338,8 @@ int main(int argc, char* argv[])
     {
         pthread_join(patient[i], NULL);
     }
+    
+    cout << "Simulation finished..." << endl << endl;
 
     return 0;
 }
