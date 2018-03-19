@@ -23,14 +23,14 @@ using namespace std;
 
 
 int count;
-int num_patient = 20;
+int num_patient = 30;
 int num_doctor = 3;
 queue <int> reception_line;
 queue <int> doctor_line;
-//int patient_doctor[num_patient] = {-1};
-//int doctor_patient[num_doctor] = {-1};
-vector <int> patient_doctor(num_patient, -1);
-vector <int> doctor_patient(num_doctor, -1);
+int patient_doctor[num_patient] = {-1};
+int doctor_patient[num_doctor] = {-1};
+//vector <int> patient_doctor(num_patient, -1);
+//vector <int> doctor_patient(num_doctor, -1);
 
 
 // declare semaphores
@@ -42,7 +42,7 @@ sem_t sem_receptionist_register;
 sem_t sem_patient_sit;
 sem_t sem_take_office;
 
-/*
+
 sem_t sem_assignment[num_patient];
 
 sem_t sem_doctor_ready[num_doctor];
@@ -50,8 +50,8 @@ sem_t sem_enter_office[num_doctor];
 sem_t sem_patient_ready[num_doctor];
 sem_t sem_listen_symptom[num_doctor];
 sem_t sem_receive_advice[num_doctor];
-*/
 
+/*
 vector <sem_t> sem_assignment(num_patient);
 
 vector <sem_t> sem_doctor_ready(num_doctor);
@@ -59,7 +59,7 @@ vector <sem_t> sem_enter_office(num_doctor);
 vector <sem_t> sem_patient_ready(num_doctor);
 vector <sem_t> sem_listen_symptom(num_doctor);
 vector <sem_t> sem_receive_advice(num_doctor);
-
+*/
 
 sem_t mutex;
 
@@ -276,9 +276,7 @@ int main(int argc, char* argv[])
     
     for(int i = 0; i < num_patient; i++)
     {
-        cout << "before: i = " << i << endl;
         sem_init(&(sem_assignment[i]), 0, 0);
-        cout << "after: i = " << i << endl;
     }
     
     for(int i = 0; i < num_doctor; i++)
