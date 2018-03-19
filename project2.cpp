@@ -265,7 +265,6 @@ int main(int argc, char* argv[])
     pthread_t doctor[num_doctor];
     pthread_t nurse[num_doctor];
     
-    cout << "testing... " << endl;
     // initialize semaphores
     sem_init(&sem_receptionist, 0, 1);
     sem_init(&sem_doctor, 0, num_doctor);
@@ -273,6 +272,8 @@ int main(int argc, char* argv[])
     sem_init(&sem_receptionist_register, 0, 0);
     sem_init(&sem_patient_sit, 0, 0);
     sem_init(&sem_take_office, 0, 0);
+
+    cout << "testing... " << endl;
 
     for(int i = 0; i < num_patient; i++)
     {
