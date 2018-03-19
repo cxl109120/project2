@@ -22,7 +22,6 @@ using namespace std;
 //#define num_doctor 3
 
 
-
 int count;
 int num_patient;
 int num_doctor;
