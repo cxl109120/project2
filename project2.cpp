@@ -271,6 +271,7 @@ int main(int argc, char* argv[])
     sem_init(&sem_patient_sit, 0, 0);
     sem_init(&sem_take_office, 0, 0);
 
+    /*
     for(int i = 0; i < num_patient; i++)
     //for(int i = 0; i < sem_assignment.size(); i++)
     {
@@ -285,6 +286,11 @@ int main(int argc, char* argv[])
         sem_init(&(sem_patient_ready[i]), 0, 0);
         sem_init(&(sem_listen_symptom[i]), 0, 0);
         sem_init(&(sem_receive_advice[i]), 0, 0);
+    }
+     */
+    for(int i = 0; i < sem_doctor_ready.size(); i++)
+    {
+        sem_init(&(sem_doctor_ready[i]), 0, 1);
     }
     
     // initialize mutex
