@@ -287,12 +287,15 @@ int main(int argc, char* argv[])
         sem_init(&(sem_listen_symptom[i]), 0, 0);
         sem_init(&(sem_receive_advice[i]), 0, 0);
     }
-     */
-    for(int i = 0; i < sem_doctor_ready.size(); i++)
-    {
-        sem_init(&(sem_doctor_ready[i]), 0, 1);
-    }
+    */
     
+    for (s : sem_assignment) sem_init(&s, 0, 0);
+    for (s : sem_doctor_ready) sem_init(&s, 0, 1);
+    for (s : sem_enter_office) sem_init(&s, 0, 0);
+    for (s : sem_patient_ready) sem_init(&s, 0, 0);
+    for (s : sem_lister_symptom) sem_init(&s, 0, 0);
+    for (s : sem_receive_advice) sem_init(&s, 0, 0);
+
     // initialize mutex
     sem_init(&mutex, 0, 1);
     
