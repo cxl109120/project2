@@ -29,18 +29,17 @@ queue <int> reception_line;
 queue <int> doctor_line;
 //int patient_doctor[num_patient] = {-1};
 //int doctor_patient[num_doctor] = {-1};
-vector <int> patient_doctor;
-vector <int> doctor_patient;
+vector <int> patient_doctor(num_patient);
+vector <int> doctor_patient(num_doctor);
 
 
 // declare semaphores
 sem_t sem_receptionist;
-//sem_t sem_patient;
 sem_t sem_doctor;
 sem_t sem_nurse;
 
-sem_t sem_register;
-sem_t sem_sit;
+sem_t sem_receptionist_register;
+sem_t sem_patient_sit;
 sem_t sem_take_office;
 
 sem_t sem_assignment[num_patient];
@@ -158,8 +157,8 @@ void* patient_thread(void* arg)
     // enqueue reception_line
     reception_line.push(patient_num);
     sem_wait(&sem_receptionist);
-    sem_post(&sem_register);
-    sem_wait(&sem_sit);
+    sem_post(&sem_receptionist_register);
+    sem_wait(&sem_patient_sit);
     //sem_post(&sem_receptionist);
     patient_sit(patient_num);
     
@@ -186,9 +185,9 @@ void* receptionist_thread(void* arg)
 {
     while (true)
     {
-        sem_wait(&sem_register);
+        sem_wait(&sem_receptionist_register);
         receptionist_register(); // dequeue reception_line
-        sem_post(&sem_sit);
+        sem_post(&sem_patient_sit);
         sem_post(&sem_receptionist);
     }
 }
@@ -261,8 +260,8 @@ int main(int argc, char* argv[])
     sem_init(&sem_receptionist, 0, 1);
     sem_init(&sem_doctor, 0, num_doctor);
     sem_init(&sem_nurse, 0, num_doctor);
-    sem_init(&sem_register, 0, 0);
-    sem_init(&sem_sit, 0, 0);
+    sem_init(&sem_receptionist_register, 0, 0);
+    sem_init(&sem_patient_sit, 0, 0);
     sem_init(&sem_take_office, 0, 0);
 
     for(int i = 0; i < num_patient; i++)
@@ -314,7 +313,6 @@ int main(int argc, char* argv[])
         pthread_join(patient[i], NULL);
     }
 
-    
     return 0;
 }
 
