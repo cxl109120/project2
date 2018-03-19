@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <vector>
 #include <queue>
 
 using namespace std;
