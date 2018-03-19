@@ -23,8 +23,8 @@ using namespace std;
 
 
 int count;
-int num_patient;
-int num_doctor;
+int num_patient = 20;
+int num_doctor = 3;
 queue <int> reception_line;
 queue <int> doctor_line;
 //int patient_doctor[num_patient] = {-1};
@@ -277,7 +277,6 @@ int main(int argc, char* argv[])
     for(int i = 0; i < num_patient; i++)
     {
         cout << "before: i = " << i << endl;
-        sem_assignment.push_back(0);
         sem_init(&(sem_assignment[i]), 0, 0);
         cout << "after: i = " << i << endl;
     }
