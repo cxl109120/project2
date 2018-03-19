@@ -29,8 +29,8 @@ queue <int> reception_line;
 queue <int> doctor_line;
 //int patient_doctor[num_patient] = {-1};
 //int doctor_patient[num_doctor] = {-1};
-vector <int> patient_doctor(num_patient) = {-1};
-vector <int> doctor_patient(num_doctor) = {-1};
+vector <int> patient_doctor(num_patient, -1);
+vector <int> doctor_patient(num_doctor, -1);
 
 
 // declare semaphores
