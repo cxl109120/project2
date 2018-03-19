@@ -254,8 +254,8 @@ int main(int argc, char* argv[])
     }
     */
 
-    //patient_doctor[num_patient] = {-1};
-    //doctor_patient[num_doctor] = {-1};
+    patient_doctor[num_patient] = {-1};
+    doctor_patient[num_doctor] = {-1};
     
     cout << "Simulation with " << num_patient << " patients and "
     << num_doctor << " doctors..." << endl << endl;
