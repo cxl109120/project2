@@ -19,7 +19,6 @@
 using namespace std;
 
 
-
 int count;
 int num_patient = 30;
 int num_doctor = 3;
@@ -240,7 +239,7 @@ int main(int argc, char* argv[])
         cin >> num_doctor;
     }
     
-    // check
+    // check illegal input
     while (num_patient > 30)
     {
         cout << endl << "Illegal input of number of patients!" << endl;
@@ -256,7 +255,7 @@ int main(int argc, char* argv[])
     }
 
     
-    cout << "Simulation starts... " << endl << endl;
+    cout << endl << "Simulation starts... " << endl << endl;
 
     // initialize thread
     pthread_t receptionist;
@@ -316,14 +315,10 @@ int main(int argc, char* argv[])
         pthread_join(patient[i], NULL);
     }
     
-    cout << "Simulation finished..." << endl << endl;
+    cout << endl << "Simulation finished..." << endl << endl;
 
     return 0;
 }
-
-
-
-
 
 
 
