@@ -18,8 +18,6 @@
 
 using namespace std;
 
-//#define num_patient 4
-//#define num_doctor 3
 
 
 int count;
@@ -27,8 +25,6 @@ int num_patient = 30;
 int num_doctor = 3;
 queue <int> reception_line;
 queue <int> doctor_line;
-//int patient_doctor[num_patient] = {-1};
-//int doctor_patient[num_doctor] = {-1};
 vector <int> patient_doctor(num_patient, -1);
 vector <int> doctor_patient(num_doctor, -1);
 
@@ -42,24 +38,12 @@ sem_t sem_receptionist_register;
 sem_t sem_patient_sit;
 sem_t sem_take_office;
 
-/*
-sem_t sem_assignment[num_patient];
-
-sem_t sem_doctor_ready[num_doctor];
-sem_t sem_enter_office[num_doctor];
-sem_t sem_patient_ready[num_doctor];
-sem_t sem_listen_symptom[num_doctor];
-sem_t sem_receive_advice[num_doctor];
-*/
-
 vector <sem_t> sem_assignment(num_patient);
-
 vector <sem_t> sem_doctor_ready(num_doctor);
 vector <sem_t> sem_enter_office(num_doctor);
 vector <sem_t> sem_patient_ready(num_doctor);
 vector <sem_t> sem_listen_symptom(num_doctor);
 vector <sem_t> sem_receive_advice(num_doctor);
-
 
 sem_t mutex;
 
@@ -240,15 +224,33 @@ int main(int argc, char* argv[])
 {
     count = 0;
     
+    // command line input of number of patients and doctors
     if (argc == 3)
     {
         num_patient = atoi(argv[1]);
         num_doctor = atoi(argv[2]);
     }
+    
+    // prompt input
     else
     {
+        cout << "Type in number of patients: ";
+        cin >> num_patient;
+        cout << "Type in number of doctors: ";
+        cin >> num_doctor;
+    }
+    
+    // check
+    while (num_patient > 30)
+    {
+        cout << "Illegal input of number of patients!" << endl;
         cout << "Type in number of patients (up to 30): ";
         cin >> num_patient;
+    }
+        
+    while (num_doctor > 3)
+    {
+        cout << "Illegal input of number of doctors!" << endl;
         cout << "Type in number of doctors (up to 3): ";
         cin >> num_doctor;
     }
@@ -256,8 +258,7 @@ int main(int argc, char* argv[])
     //patient_doctor[num_patient] = {-1};
     //doctor_patient[num_doctor] = {-1};
     
-    cout << "Simulation with " << num_patient << " patients and "
-    << num_doctor << " doctors..." << endl << endl;
+    cout << "Simulation starts... " << endl << endl;
 
     // initialize thread
     pthread_t receptionist;
@@ -288,26 +289,9 @@ int main(int argc, char* argv[])
         sem_init(&(sem_receive_advice[i]), 0, 0);
     }
     
-    
-    /*
-    for(int i = 0; i < sem_assignment.size(); i++)
-        sem_init(&(sem_assignment[i]), 0, 0);
-    
-    for(int i = 0; i < sem_doctor_ready.size(); i++)
-        sem_init(&(sem_doctor_ready[i]), 0, 1);
-    for(int i = 0; i < sem_enter_office.size(); i++)
-        sem_init(&(sem_enter_office[i]), 0, 0);
-    for(int i = 0; i < sem_patient_ready.size(); i++)
-        sem_init(&(sem_patient_ready[i]), 0, 0);
-    for(int i = 0; i < sem_listen_symptom.size(); i++)
-        sem_init(&(sem_listen_symptom[i]), 0, 0);
-    for(int i = 0; i < sem_receive_advice.size(); i++)
-        sem_init(&(sem_receive_advice[i]), 0, 0);
-    */
-    
     // initialize mutex
     sem_init(&mutex, 0, 1);
-    
+
     
     // patient thread
     for (int i = 0; i < num_patient; i++)
@@ -325,12 +309,10 @@ int main(int argc, char* argv[])
     int *doctor_num;
     for (int i = 0; i < num_doctor; i++)
     {
-        //sem_wait(&mutex);
         doctor_num = (int*)malloc(sizeof(int));
         *doctor_num = i;
         pthread_create(&doctor[i], NULL, doctor_thread, doctor_num);
         pthread_create(&nurse[i], NULL, nurse_thread, doctor_num);
-        //sem_post(&mutex);
     }
     
 
