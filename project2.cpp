@@ -23,8 +23,8 @@ using namespace std;
 
 
 int count;
-int num_patient = 3;
-int num_doctor = 3;
+const int num_patient;
+const int num_doctor;
 queue <int> reception_line;
 queue <int> doctor_line;
 //int patient_doctor[num_patient] = {-1};
