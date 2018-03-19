@@ -289,12 +289,12 @@ int main(int argc, char* argv[])
     }
     */
     
-    for (s : sem_assignment) sem_init(&s, 0, 0);
-    for (s : sem_doctor_ready) sem_init(&s, 0, 1);
-    for (s : sem_enter_office) sem_init(&s, 0, 0);
-    for (s : sem_patient_ready) sem_init(&s, 0, 0);
-    for (s : sem_lister_symptom) sem_init(&s, 0, 0);
-    for (s : sem_receive_advice) sem_init(&s, 0, 0);
+    for (sem_t s : sem_assignment) sem_init(&s, 0, 0);
+    for (sem_t s : sem_doctor_ready) sem_init(&s, 0, 1);
+    for (sem_t s : sem_enter_office) sem_init(&s, 0, 0);
+    for (sem_t s : sem_patient_ready) sem_init(&s, 0, 0);
+    for (sem_t s : sem_lister_symptom) sem_init(&s, 0, 0);
+    for (sem_t s : sem_receive_advice) sem_init(&s, 0, 0);
 
     // initialize mutex
     sem_init(&mutex, 0, 1);
