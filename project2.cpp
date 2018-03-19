@@ -17,12 +17,12 @@
 
 using namespace std;
 
-#define num_patient 4
-#define num_doctor 3
+//#define num_patient 4
+//#define num_doctor 3
 
 
 
-int count;
+int count, num_patient, num_doctor;
 queue <int> reception_line;
 queue <int> doctor_line;
 int patient_doctor[num_patient] = {-1};
@@ -221,10 +221,26 @@ void* doctor_thread(void* num)
 
 
 
-
+// main function starts here----------------------------------------------------------
 int main(int argc, char* argv[])
 {
     count = 0;
+    
+    if (argc == 3)
+    {
+        num_patient = atoi(argv[1]);
+        num_doctor = atoi(argv[2]);
+    }
+    else
+    {
+        cout << "Type in number of patients: ";
+        cin >> num_patient;
+        cout << "Type in number of doctors: ";
+        cin >> num_doctor;
+    }
+    
+    cout << "Simulation with " << num_patient << " patients and "
+    << num_doctor << " doctors..." << endl << endl;
 
     // initialize thread
     pthread_t receptionist;
