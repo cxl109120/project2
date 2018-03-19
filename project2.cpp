@@ -243,20 +243,18 @@ int main(int argc, char* argv[])
     // check
     while (num_patient > 30)
     {
-        cout << "Illegal input of number of patients!" << endl;
+        cout << endl << "Illegal input of number of patients!" << endl;
         cout << "Type in number of patients (up to 30): ";
         cin >> num_patient;
     }
         
     while (num_doctor > 3)
     {
-        cout << "Illegal input of number of doctors!" << endl;
+        cout << endl << "Illegal input of number of doctors!" << endl;
         cout << "Type in number of doctors (up to 3): ";
         cin >> num_doctor;
     }
 
-    //patient_doctor[num_patient] = {-1};
-    //doctor_patient[num_doctor] = {-1};
     
     cout << "Simulation starts... " << endl << endl;
 
@@ -296,9 +294,6 @@ int main(int argc, char* argv[])
     // patient thread
     for (int i = 0; i < num_patient; i++)
     {
-        //patient_num = (int*)malloc(sizeof(int));
-        //*patient_num = i;
-        //pthread_create(&patient[i], NULL, patient_thread, patient_num);
         pthread_create(&patient[i], NULL, patient_thread, NULL);
     }
     
