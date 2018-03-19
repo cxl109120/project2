@@ -277,7 +277,7 @@ int main(int argc, char* argv[])
     for(int i = 0; i < num_patient; i++)
     {
         cout << "before: i = " << i << endl;
-        sem_init(&(sem_assignment[i]), 0, 0);
+        sem_init(&(sem_assignment.at(i), 0, 0);
         cout << "after: i = " << i << endl;
     }
     
