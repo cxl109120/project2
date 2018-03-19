@@ -29,8 +29,8 @@ queue <int> reception_line;
 queue <int> doctor_line;
 //int patient_doctor[num_patient] = {-1};
 //int doctor_patient[num_doctor] = {-1};
-vector <int> patient_doctor(num_patient);
-vector <int> doctor_patient(num_doctor);
+vector <int> patient_doctor(num_patient) = {-1};
+vector <int> doctor_patient(num_doctor) = {-1};
 
 
 // declare semaphores
@@ -52,7 +52,6 @@ sem_t sem_listen_symptom[num_doctor];
 sem_t sem_receive_advice[num_doctor];
 */
 vector <sem_t> sem_assignment(num_patient);
-
 vector <sem_t> sem_doctor_ready(num_doctor);
 vector <sem_t> sem_enter_office(num_doctor);
 vector <sem_t> sem_patient_ready(num_doctor);
@@ -254,8 +253,8 @@ int main(int argc, char* argv[])
     }
     */
 
-    patient_doctor[num_patient] = {-1};
-    doctor_patient[num_doctor] = {-1};
+    //patient_doctor[num_patient] = {-1};
+    //doctor_patient[num_doctor] = {-1};
     
     cout << "Simulation with " << num_patient << " patients and "
     << num_doctor << " doctors..." << endl << endl;
