@@ -272,13 +272,13 @@ int main(int argc, char* argv[])
     sem_init(&sem_patient_sit, 0, 0);
     sem_init(&sem_take_office, 0, 0);
 
-    /*
+
     for(int i = 0; i < num_patient; i++)
     //for(int i = 0; i < sem_assignment.size(); i++)
     {
         sem_init(&(sem_assignment[i]), 0, 0);
     }
-
+    
     for(int i = 0; i < num_doctor; i++)
     //for(int i = 0; i < sem_doctor_ready.size(); i++)
     {
@@ -288,15 +288,29 @@ int main(int argc, char* argv[])
         sem_init(&(sem_listen_symptom[i]), 0, 0);
         sem_init(&(sem_receive_advice[i]), 0, 0);
     }
-    */
     
+    for(int i = 0; i < sem_assignment.size(); i++)
+        sem_init(&(sem_assignment[i]), 0, 0);
+    for(int i = 0; i < sem_doctor_ready.size(); i++)
+        sem_init(&(sem_doctor_ready[i]), 0, 1);
+    for(int i = 0; i < sem_enter_office.size(); i++)
+        sem_init(&(sem_enter_office[i]), 0, 0);
+    for(int i = 0; i < sem_patient_ready.size(); i++)
+        sem_init(&(sem_patient_ready[i]), 0, 0);
+    for(int i = 0; i < sem_listen_symptom.size(); i++)
+        sem_init(&(sem_listen_symptom[i]), 0, 0);
+    for(int i = 0; i < sem_receive_advice.size(); i++)
+        sem_init(&(sem_receive_advice[i]), 0, 0);
+    
+    /*
     for (sem_t s : sem_assignment) sem_init(&s, 0, 0);
     for (sem_t s : sem_doctor_ready) sem_init(&s, 0, 1);
     for (sem_t s : sem_enter_office) sem_init(&s, 0, 0);
     for (sem_t s : sem_patient_ready) sem_init(&s, 0, 0);
     for (sem_t s : sem_lister_symptom) sem_init(&s, 0, 0);
     for (sem_t s : sem_receive_advice) sem_init(&s, 0, 0);
-
+    */
+    
     // initialize mutex
     sem_init(&mutex, 0, 1);
     
