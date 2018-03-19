@@ -51,6 +51,8 @@ sem_t sem_patient_ready[num_doctor];
 sem_t sem_listen_symptom[num_doctor];
 sem_t sem_receive_advice[num_doctor];
 */
+vector <sem_t> sem_assignment(num_patient);
+
 vector <sem_t> sem_doctor_ready(num_doctor);
 vector <sem_t> sem_enter_office(num_doctor);
 vector <sem_t> sem_patient_ready(num_doctor);
