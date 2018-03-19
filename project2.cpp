@@ -29,8 +29,8 @@ queue <int> reception_line;
 queue <int> doctor_line;
 //int patient_doctor[num_patient] = {-1};
 //int doctor_patient[num_doctor] = {-1};
-vector <int> patient_doctor[num_patient] = {-1};
-vector <int> doctor_patient[num_doctor] = {-1};
+vector <int> patient_doctor;
+vector <int> doctor_patient;
 
 
 // declare semaphores
@@ -244,6 +244,10 @@ int main(int argc, char* argv[])
         cin >> num_doctor;
     }
     */
+
+    patient_doctor[num_patient] = {-1};
+    doctor_patient[num_doctor] = {-1};
+    
     cout << "Simulation with " << num_patient << " patients and "
     << num_doctor << " doctors..." << endl << endl;
 
