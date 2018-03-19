@@ -273,8 +273,6 @@ int main(int argc, char* argv[])
     sem_init(&sem_patient_sit, 0, 0);
     sem_init(&sem_take_office, 0, 0);
 
-    cout << "testing... " << endl;
-
     for(int i = 0; i < num_patient; i++)
     {
         sem_init(&(sem_assignment[i]), 0, 0);
@@ -288,6 +286,7 @@ int main(int argc, char* argv[])
         sem_init(&(sem_listen_symptom[i]), 0, 0);
         sem_init(&(sem_receive_advice[i]), 0, 0);
     }
+    cout << "testing... " << endl;
 
     
     // initialize mutex
