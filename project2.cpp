@@ -55,7 +55,7 @@ void patient_enter_clinic(int num)
     sem_wait(&mutex);
     cout << "Patient " << num
     << " enters waiting room, waits for receptionist" << endl;
-    sleep(0.5);
+    sleep(1);
     sem_post(&mutex);
 }
 
@@ -64,7 +64,7 @@ void patient_sit(int num)
     sem_wait(&mutex);
     cout << "Patient " << num
     << " leaves receptionist and sits in waiting room" << endl;
-    sleep(0.5);
+    sleep(1);
     sem_post(&mutex);
 }
 
@@ -75,7 +75,7 @@ void receptionist_register()
     // dequeue reception_line
     reception_line.pop();
     cout << "Receptionist register patient " << patient_num << endl;
-    sleep(0.5);
+    sleep(1);
     sem_post(&mutex);
 }
 
@@ -90,7 +90,7 @@ int nurse_take_office(int num)
     
     patient_doctor[patient_num] = num;
     doctor_patient[num] = patient_num;
-    sleep(0.5);
+    sleep(1);
     sem_post(&mutex);
     return patient_num;
 }
@@ -101,7 +101,7 @@ void patient_enter_office(int num)
     int doctor_num = patient_doctor[num];
     cout << "Patient " << num
     << " enters doctor "<< doctor_num << "'s office" << endl;
-    sleep(0.5);
+    sleep(1);
     sem_post(&mutex);
 }
 
@@ -111,7 +111,7 @@ void doctor_listen(int num)
     int patient_num = doctor_patient[num];
     cout << "Doctor " << num
     << " listens to symptoms from patient " << patient_num << endl;
-    sleep(0.5);
+    sleep(1);
     sem_post(&mutex);
 }
 
@@ -121,7 +121,7 @@ void patient_receive(int num)
     int doctor_num = patient_doctor[num];
     cout << "Patient " << num
     << " receives advice from doctor " << doctor_num << endl;
-    sleep(0.5);
+    sleep(1);
     sem_post(&mutex);
 }
 
@@ -130,7 +130,7 @@ void patient_leave(int num)
     sem_wait(&mutex);
     cout << "Patient " << num
     << " leave" << endl;
-    sleep(0.5);
+    sleep(1);
     sem_post(&mutex);
 }
 
