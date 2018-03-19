@@ -20,11 +20,16 @@ using namespace std;
 //#define num_patient 4
 //#define num_doctor 3
 
-
+int read_int()
+{
+    int val;
+    cin >> val;
+    return val;
+}
 
 int count;
-const int num_patient = 0;
-const int num_doctor = 0;
+const int num_patient = read_int();
+const int num_doctor = read_int();
 queue <int> reception_line;
 queue <int> doctor_line;
 //int patient_doctor[num_patient] = {-1};
