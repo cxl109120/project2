@@ -17,7 +17,6 @@
 
 using namespace std;
 
-#define num_receptionist 1
 #define num_patient 4
 #define num_doctor 3
 
@@ -28,6 +27,7 @@ queue <int> reception_line;
 queue <int> doctor_line;
 int patient_doctor[num_patient] = {-1};
 int doctor_patient[num_doctor] = {-1};
+
 
 // declare semaphores
 sem_t sem_receptionist;
@@ -47,7 +47,7 @@ sem_t sem_patient_ready[num_doctor];
 sem_t sem_listen_symptom[num_doctor];
 sem_t sem_receive_advice[num_doctor];
 
-sem_t mutex1, mutex2;
+sem_t mutex;
 
 
 
@@ -55,36 +55,36 @@ sem_t mutex1, mutex2;
 // define functions
 void patient_enter_clinic(int num)
 {
-    sem_wait(&mutex1);
+    sem_wait(&mutex);
     cout << "Patient " << num
     << " enters waiting room, waits for receptionist" << endl;
     sleep(0.5);
-    sem_post(&mutex1);
+    sem_post(&mutex);
 }
 
 void patient_sit(int num)
 {
-    sem_wait(&mutex1);
+    sem_wait(&mutex);
     cout << "Patient " << num
     << " leaves receptionist and sits in waiting room" << endl;
     sleep(0.5);
-    sem_post(&mutex1);
+    sem_post(&mutex);
 }
 
 void receptionist_register()
 {
-    sem_wait(&mutex1);
+    sem_wait(&mutex);
     int patient_num = reception_line.front();
     // dequeue reception_line
     reception_line.pop();
     cout << "Receptionist register patient " << patient_num << endl;
     sleep(0.5);
-    sem_post(&mutex1);
+    sem_post(&mutex);
 }
 
 int nurse_take_office(int num)
 {
-    sem_wait(&mutex1);
+    sem_wait(&mutex);
     int patient_num = doctor_line.front();
     // dequeue doctor_line
     doctor_line.pop();
@@ -94,47 +94,47 @@ int nurse_take_office(int num)
     patient_doctor[patient_num] = num;
     doctor_patient[num] = patient_num;
     sleep(0.5);
-    sem_post(&mutex1);
+    sem_post(&mutex);
     return patient_num;
 }
 
 void patient_enter_office(int num)
 {
-    sem_wait(&mutex1);
+    sem_wait(&mutex);
     int doctor_num = patient_doctor[num];
     cout << "Patient " << num
     << " enters doctor "<< doctor_num << "'s office" << endl;
     sleep(0.5);
-    sem_post(&mutex1);
+    sem_post(&mutex);
 }
 
 void doctor_listen(int num)
 {
-    sem_wait(&mutex1);
+    sem_wait(&mutex);
     int patient_num = doctor_patient[num];
     cout << "Doctor " << num
     << " listens to symptoms from patient " << patient_num << endl;
     sleep(0.5);
-    sem_post(&mutex1);
+    sem_post(&mutex);
 }
 
 void patient_receive(int num)
 {
-    sem_wait(&mutex1);
+    sem_wait(&mutex);
     int doctor_num = patient_doctor[num];
     cout << "Patient " << num
     << " receives advice from doctor " << doctor_num << endl;
     sleep(0.5);
-    sem_post(&mutex1);
+    sem_post(&mutex);
 }
 
 void patient_leave(int num)
 {
-    sem_wait(&mutex1);
+    sem_wait(&mutex);
     cout << "Patient " << num
     << " leave" << endl;
     sleep(0.5);
-    sem_post(&mutex1);
+    sem_post(&mutex);
 }
 
 
@@ -143,11 +143,12 @@ void patient_leave(int num)
 void* patient_thread(void* arg)
 {
     int patient_num;
-    //int patient_num = *(int*) num;
-    sem_wait(&mutex1);
+    int doctor_num;
+    
+    sem_wait(&mutex);
     patient_num = count;
     count++;
-    sem_post(&mutex1);
+    sem_post(&mutex);
     
     patient_enter_clinic(patient_num);
     // enqueue reception_line
@@ -165,7 +166,7 @@ void* patient_thread(void* arg)
     
     // assign patients with doctors
     sem_wait(&(sem_assignment[patient_num]));
-    int doctor_num = patient_doctor[patient_num];
+    doctor_num = patient_doctor[patient_num];
     
     sem_wait(&(sem_enter_office[doctor_num]));
     patient_enter_office(patient_num);
@@ -185,22 +186,22 @@ void* receptionist_thread(void* arg)
         receptionist_register(); // dequeue reception_line
         sem_post(&sem_sit);
         sem_post(&sem_receptionist);
-        //sem_post(&sem_take_office);
     }
 }
 
 void* nurse_thread(void* num)
 {
     int nurse_num = *(int*) num;
+    int patient_num;
+    
     while (true)
     {
         sem_wait(&sem_take_office);
         sem_wait(&(sem_doctor_ready[nurse_num]));
-        int patient_num = nurse_take_office(nurse_num); // dequeue doctor_line
+        patient_num = nurse_take_office(nurse_num); // dequeue doctor_line
         sem_post(&(sem_assignment[patient_num]));
         sem_post(&(sem_enter_office[nurse_num]));
         sem_post(&sem_nurse);
-        //sem_post(&sem_patient_ready);
     }
 }
 
@@ -232,22 +233,18 @@ int main(int argc, char* argv[])
     pthread_t nurse[num_doctor];
     
     // initialize semaphores
-    sem_init(&sem_receptionist, 0, num_receptionist);
-    //sem_init(&sem_patient, 0, num_patient);
+    sem_init(&sem_receptionist, 0, 1);
     sem_init(&sem_doctor, 0, num_doctor);
     sem_init(&sem_nurse, 0, num_doctor);
     sem_init(&sem_register, 0, 0);
     sem_init(&sem_sit, 0, 0);
     sem_init(&sem_take_office, 0, 0);
-    /*
-    sem_init(&sem_patient_ready, 0, 0);
-    sem_init(&sem_listen_symptom, 0, 0);
-    sem_init(&sem_receive_advice, 0, 0);
-    */
+
     for(int i = 0; i < num_patient; i++)
     {
         sem_init(&(sem_assignment[i]), 0, 0);
     }
+    
     for(int i = 0; i < num_doctor; i++)
     {
         sem_init(&(sem_doctor_ready[i]), 0, 1);
@@ -259,12 +256,9 @@ int main(int argc, char* argv[])
 
     
     // initialize mutex
-    sem_init(&mutex1, 0, 1);
-    //sem_init(&mutex2, 0, 1);
+    sem_init(&mutex, 0, 1);
     
     
-    //int *patient_num;
-
     // patient thread
     for (int i = 0; i < num_patient; i++)
     {
@@ -279,15 +273,14 @@ int main(int argc, char* argv[])
     
     // doctor and nurse thread
     int *doctor_num;
-    //int doctor_num;
     for (int i = 0; i < num_doctor; i++)
     {
-        sem_wait(&mutex1);
+        sem_wait(&mutex);
         doctor_num = (int*)malloc(sizeof(int));
         *doctor_num = i;
         pthread_create(&doctor[i], NULL, doctor_thread, doctor_num);
         pthread_create(&nurse[i], NULL, nurse_thread, doctor_num);
-        sem_post(&mutex1);
+        sem_post(&mutex);
     }
     
 
@@ -296,8 +289,7 @@ int main(int argc, char* argv[])
         pthread_join(patient[i], NULL);
     }
 
-    //sem_destroy(&sem_receptionist);
-
+    
     return 0;
 }
 
