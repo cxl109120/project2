@@ -233,6 +233,7 @@ int main(int argc, char* argv[])
         num_patient = atoi(argv[1]);
         num_doctor = atoi(argv[2]);
     }
+    /*
     else
     {
         cout << "Type in number of patients: ";
@@ -240,7 +241,7 @@ int main(int argc, char* argv[])
         cout << "Type in number of doctors: ";
         cin >> num_doctor;
     }
-    
+    */
     cout << "Simulation with " << num_patient << " patients and "
     << num_doctor << " doctors..." << endl << endl;
 
