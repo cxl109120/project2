@@ -20,13 +20,8 @@ using namespace std;
 
 
 int count;
-//int num_patient = 30;
-//int num_doctor = 3;
-
-int* num_patient_addr = (int*)malloc(sizeof(int));
-int* num_doctor_addr = (int*)malloc(sizeof(int));
-int const num_patient = * num_doctor_addr;
-int num_doctor = * num_patient_addr;
+int num_patient = 30;
+int num_doctor = 3;
 
 queue <int> reception_line;
 queue <int> doctor_line;
@@ -43,8 +38,7 @@ sem_t sem_receptionist_register;
 sem_t sem_patient_sit;
 sem_t sem_take_office;
 
-//vector <sem_t> sem_assignment(num_patient);
-sem_t sem_assignment[*num_patient_addr];
+vector <sem_t> sem_assignment(num_patient);
 vector <sem_t> sem_doctor_ready(num_doctor);
 vector <sem_t> sem_enter_office(num_doctor);
 vector <sem_t> sem_patient_ready(num_doctor);
@@ -231,12 +225,8 @@ int main(int argc, char* argv[])
     // command line input of number of patients and doctors
     if (argc == 3)
     {
-        //num_patient = atoi(argv[1]);
-        //num_doctor = atoi(argv[2]);
-        *num_patient_addr = atoi(argv[1]);
-        num_patient = *num_patient_addr;
-        *num_doctor_addr = atoi(argv[2]);
-        num_doctor = *num_doctor_addr;
+        num_patient = atoi(argv[1]);
+        num_doctor = atoi(argv[2]);
     }
     
     // prompt input
@@ -265,8 +255,6 @@ int main(int argc, char* argv[])
 
     
     cout << endl << "Simulation starts... " << endl << endl;
-    
-    cout << "num_patient: " << num_patient << ", num_doctor: " << num_doctor << endl;
 
     // initialize thread
     pthread_t receptionist;
@@ -285,8 +273,6 @@ int main(int argc, char* argv[])
     
     for(int i = 0; i < num_patient; i++)
     {
-        // test
-        cout << "i = " << i << endl;
         sem_init(&(sem_assignment[i]), 0, 0);
     }
     
