@@ -20,8 +20,14 @@ using namespace std;
 
 
 int count;
-int num_patient = 30;
-int num_doctor = 3;
+//int num_patient = 30;
+//int num_doctor = 3;
+
+int* num_patient_addr = malloc(size(int));
+int* num_doctor_addr = malloc(size(int));
+num_patient = * num_doctor_addr;
+num_doctor = * num_patient_addr;
+
 queue <int> reception_line;
 queue <int> doctor_line;
 vector <int> patient_doctor(num_patient, -1);
@@ -45,8 +51,6 @@ vector <sem_t> sem_listen_symptom(num_doctor);
 vector <sem_t> sem_receive_advice(num_doctor);
 
 sem_t mutex;
-
-
 
 
 // define functions
