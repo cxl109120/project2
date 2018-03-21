@@ -23,8 +23,8 @@ int count;
 //int num_patient = 30;
 //int num_doctor = 3;
 
-int* num_patient_addr = malloc(size(int));
-int* num_doctor_addr = malloc(size(int));
+int* num_patient_addr = malloc(sizeof(int));
+int* num_doctor_addr = malloc(sizeof(int));
 num_patient = * num_doctor_addr;
 num_doctor = * num_patient_addr;
 
