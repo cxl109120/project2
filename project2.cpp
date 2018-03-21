@@ -262,6 +262,8 @@ int main(int argc, char* argv[])
 
     
     cout << endl << "Simulation starts... " << endl << endl;
+    
+    cout << "num_patient: " << num_patient << ", num_doctor: " << num_doctor << endl;
 
     // initialize thread
     pthread_t receptionist;
