@@ -230,8 +230,10 @@ int main(int argc, char* argv[])
     // command line input of number of patients and doctors
     if (argc == 3)
     {
-        num_patient = atoi(argv[1]);
-        num_doctor = atoi(argv[2]);
+        //num_patient = atoi(argv[1]);
+        //num_doctor = atoi(argv[2]);
+        *num_patient_addr = atoi(argv[1]);
+        *num_doctor_addr = atoi(argv[2]);
     }
     
     // prompt input
