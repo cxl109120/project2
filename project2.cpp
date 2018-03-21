@@ -233,7 +233,9 @@ int main(int argc, char* argv[])
         //num_patient = atoi(argv[1]);
         //num_doctor = atoi(argv[2]);
         *num_patient_addr = atoi(argv[1]);
+        num_patient = *num_patient_addr;
         *num_doctor_addr = atoi(argv[2]);
+        num_doctor = *num_patient_addr;
     }
     
     // prompt input
