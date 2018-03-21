@@ -25,7 +25,7 @@ int count;
 
 int* num_patient_addr = (int*)malloc(sizeof(int));
 int* num_doctor_addr = (int*)malloc(sizeof(int));
-int num_patient = * num_doctor_addr;
+int const num_patient = * num_doctor_addr;
 int num_doctor = * num_patient_addr;
 
 queue <int> reception_line;
