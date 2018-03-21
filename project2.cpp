@@ -44,7 +44,7 @@ sem_t sem_patient_sit;
 sem_t sem_take_office;
 
 //vector <sem_t> sem_assignment(num_patient);
-vector <sem_t> sem_assignment(*num_patient_addr);
+sem_t sem_assignment[*num_patient_addr];
 vector <sem_t> sem_doctor_ready(num_doctor);
 vector <sem_t> sem_enter_office(num_doctor);
 vector <sem_t> sem_patient_ready(num_doctor);
